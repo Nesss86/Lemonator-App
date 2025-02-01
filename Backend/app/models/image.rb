@@ -1,3 +1,3 @@
 class Image < ApplicationRecord
-  belongs_to :listing
+  belongs_to :car_listing
 end
