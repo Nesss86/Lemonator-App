@@ -1,1 +1,9 @@
+# As a user, I can log in and see my profile (not necessary)
+# As a user, I can look for cars based on location, make, model, year, price, mileage, colour (using search bar)
+# As a user, I can list my used car and add pictures and a description
+# As a user, I can message a seller to ask about their car.
+ - Email messages
+ - Live messaging on a modal (stretch)
+# As a user, I can pay directly through the website using Stripe (stretch)
+# As a user, I can use the AI assistant to help me find the ideal car and compare different models (stretch)
 
