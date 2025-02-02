@@ -160,4 +160,4 @@ messages = [
 
 puts "Messages created successfully!"
 
-puts "Seeding complete! 🚀"
+puts "Seeding complete!🍋🍋🍋🍋🍋🍋"
