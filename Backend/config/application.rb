@@ -17,6 +17,17 @@ module Backend
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
+    # CORS configuration: Allows requests from the frontend (localhost:3001)
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'http://localhost:3001'  # Frontend origin
+        resource '*',                    # Allow all resources
+                 headers: :any,          # Allow any headers
+                 methods: [:get, :post, :patch, :put, :delete, :options, :head], # Allowed HTTP methods
+                 credentials: true       # Allow credentials like cookies or headers
+      end
+    end
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
@@ -31,3 +42,4 @@ module Backend
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
+

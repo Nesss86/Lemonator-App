@@ -1,23 +1,53 @@
-import React from "react";
-import NavigationBar from "./components/NavigationBar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavigationBar from './components/NavigationBar';
+import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
+import ProfilePage from './components/ProfilePage';
 import './App.css';
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    if (loggedInUser) {
+      setUser(loggedInUser);
+    }
+  }, []);
+
   return (
     <Router>
-      <NavigationBar />
+      <NavigationBar user={user} />
       <Routes>
         <Route path="/" element={<div>Home Page</div>} />
-        <Route path="/browse-cars" element={<div>Browse Cars Page</div>} />
-        <Route path="/sell-your-car" element={<div>Sell Your Car Page</div>} />
-        <Route path="/help" element={<div>Help/Contact Us Page</div>} />
-        <Route path="/login" element={<div>Login Page</div>} />
-        <Route path="/signup" element={<div>Sign Up Page</div>} />
+        <Route
+          path="/login"
+          element={
+            <LoginForm onLoginSuccess={(user) => {
+              setUser(user);
+              window.location.href = '/profile'; // Redirect after login
+            }} />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <SignupForm onSignupSuccess={(user) => {
+              setUser(user);
+              window.location.href = '/profile'; // Redirect after signup
+            }} />
+          }
+        />
+        <Route path="/profile" element={<ProfilePage user={user} />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
+
+
+
 
