@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.navigation-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  background-color: #1a1a1a; /* Sleek dark background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+
+    .logo a {
+      color: #ffffff;
+      font-size: 2.2rem; /* Slightly larger font for emphasis */
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin-right: 10px; /* Space between text and lemon */
+
+      &:hover {
+        color: #ffcc00; /* Yellow hover effect */
+      }
+    }
+
+    .lemon-icon {
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.3)); /* Soft shadow */
+
+      &:hover {
+        transform: rotate(-10deg) scale(1.1); /* Slight hover effect */
+        filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.5)); /* Enhanced shadow on hover */
+      }
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+
+    li {
+      list-style: none;
+
+      a {
+        text-decoration: none;
+        color: #cccccc;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 16px;
+
+    .btn {
+      padding: 8px 16px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #ffffff;
+      background: linear-gradient(135deg, #6c63ff, #3f3d9b); /* Modern blue-violet gradient */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: linear-gradient(135deg, #5351d4, #2c2a75); /* Slight darker gradient on hover */
+        transform: translateY(-2px); /* Hover lift effect */
+        box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4); /* Glow effect on hover */
+      }
+    }
+  }
+}
+
+
+
