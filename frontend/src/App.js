@@ -46,9 +46,6 @@ function App() {
         <Route path="/profile" element={<ProfilePage user={user} />} />
       </Routes>
       <SearchBar />
-
-   {/* Test ListingList Component */}
-   <h2>Explore our Listings</h2>
    <ul>
     <ListingList cars={mockCarList} />
    </ul>
