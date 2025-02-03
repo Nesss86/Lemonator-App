@@ -14,4 +14,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # Defining routes for listings 
+  resources :car_listings
 end
