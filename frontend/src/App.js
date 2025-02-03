@@ -5,8 +5,9 @@ import SearchBar from './components/SearchBar';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import ProfilePage from './components/ProfilePage';
-import ListingListItem from './components/ListingListItem';
-import mockCarData from "./mocks/mockCarData";
+import ListingList from './components/ListingList';
+import mockCarList from './mocks/mockCarList';
+//import mockCarData from "./mocks/mockCarData";
 import './App.css';
 
 function App() {
@@ -45,11 +46,8 @@ function App() {
         <Route path="/profile" element={<ProfilePage user={user} />} />
       </Routes>
       <SearchBar />
-
-   {/* Test ListingListItem Component */}
-   <h2>Explore our Listings</h2>
    <ul>
-    <ListingListItem car={mockCarData} />
+    <ListingList cars={mockCarList} />
    </ul>
     </Router>
   );
