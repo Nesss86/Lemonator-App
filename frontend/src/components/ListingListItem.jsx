@@ -12,11 +12,17 @@ const ListingListItem = ({ car }) => {
       />
 
       <div className="listing-list__car-details">
-        <h3>{car.make} {car.model}</h3>
-        <p>Year: {car.year}</p>
+        <h3>{car.year} {car.make} {car.model}</h3>
+        <div className="listing-list__details">
         <p>Mileage: {car.mileage} km</p>
+        <p>Location: {car.city} </p>
+        </div>
+        
+        <hr />
+        <div className="listing-list__car-price">
         <p>Price: ${car.price}</p>
-        <p>Location: {car.city}</p>
+        </div>
+        <button className="listing-list__button">View Details</button>
       </div>
     </li>
   );
