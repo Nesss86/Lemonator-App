@@ -15,7 +15,7 @@ const ListingListItem = ({ car }) => {
         <h3>{car.make} {car.model}</h3>
         <p>Year: {car.year}</p>
         <p>Mileage: {car.mileage} km</p>
-        <p>Price: {car.price}</p>
+        <p>Price: ${car.price}</p>
         <p>Location: {car.city}</p>
       </div>
     </li>
