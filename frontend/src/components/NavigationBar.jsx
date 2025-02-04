@@ -30,6 +30,7 @@ function NavigationBar() {
       <ul className="nav-links">
         <li><Link to="/browse-cars">Browse Cars</Link></li>
         <li><Link to="/help">Help/Contact Us</Link></li>
+
         {user && (
           <li className="dropdown">
             <span className="dropdown-toggle">My Account</span>
@@ -45,9 +46,7 @@ function NavigationBar() {
 
       <div className="auth-buttons">
         {user ? (
-          <>
-            <button className="btn logout-btn" onClick={handleLogout}>Log Out</button>
-          </>
+          <button className="btn logout-btn" onClick={handleLogout}>Log Out</button>
         ) : (
           <>
             <Link to="/login" className="btn">Log In</Link>
@@ -60,6 +59,7 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+
 
 
 

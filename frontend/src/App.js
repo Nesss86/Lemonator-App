@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
-import SearchBar from './components/SearchBar';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
-import ProfilePage from './components/ProfilePage';
+
+import ProfilePage from './components/ProfilePage/ProfilePage';
+import LandingPage from './components/LandingPage'; // Import the LandingPage component
 import ListingList from './components/ListingList';
 import api from './api/api';
 // import mockCarList from './mocks/mockCarList';
 //import mockCarData from "./mocks/mockCarData";
+
 import './App.css';
 
 function App() {
@@ -34,7 +36,7 @@ function App() {
     <Router>
       <NavigationBar user={user} />
       <Routes>
-        <Route path="/" element={<div>Home Page</div>} />
+        <Route path="/" element={<LandingPage />} />
         <Route
           path="/login"
           element={
@@ -55,15 +57,18 @@ function App() {
         />
         <Route path="/profile" element={<ProfilePage user={user} />} />
       </Routes>
+
       <SearchBar />
    <ul>
     <ListingList cars={carListings} />
    </ul>
+
     </Router>
   );
 }
 
 export default App;
+
 
 
 

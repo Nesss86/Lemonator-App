@@ -1,34 +1,45 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import api from '../api/api';
 
-const SignupForm = ({ onSignupSuccess }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function SignupForm({ onSignupSuccess }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSignup = async (event) => {
-    event.preventDefault();
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:3000/signup', {
-        email,
-        password,
+      const response = await api.post('/signup', {
         first_name: firstName,
         last_name: lastName,
+        email,
+        password,
       });
-      console.log('Signup successful:', response.data);
 
-      // Automatically log in the user after signing up
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      onSignupSuccess(response.data.user);
+      const user = response.data.user;
+
+      // Store user in local storage
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Notify parent component (App.js)
+      onSignupSuccess(user);
+
+      // Redirect to profile page
+      navigate('/profile');
     } catch (error) {
-      console.error('Error signing up:', error);
+      setError('Signup failed. Please try again.');
     }
   };
 
   return (
     <form onSubmit={handleSignup}>
       <h2>Sign Up</h2>
+      {error && <p>{error}</p>}
       <input
         type="text"
         placeholder="First Name"
@@ -60,7 +71,8 @@ const SignupForm = ({ onSignupSuccess }) => {
       <button type="submit">Sign Up</button>
     </form>
   );
-};
+}
 
 export default SignupForm;
+
 

@@ -1,0 +1,50 @@
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.edit-profile-btn {
+      background-color: #4caf50;
+      color: #fff;
+
+      &:hover {
+        background-color: #45a049;
+      }
+    }
+
+    &.add-listing-btn {
+      background-color: #2196f3;
+      color: #fff;
+
+      &:hover {
+        background-color: #0b7dda;
+      }
+    }
+  }
+
+  .reviews-section {
+    h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    ul {
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 6px;
+        color: #555;
+      }
+    }
+  }
+}
