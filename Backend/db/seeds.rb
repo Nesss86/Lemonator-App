@@ -20,11 +20,11 @@ User.destroy_all
 puts "Adding users..."
 
 users = [
-  { first_name: "John", last_name: "Doe", email: "john.doe@example.com", password: "password123" },
-  { first_name: "Jane", last_name: "Smith", email: "jane.smith@example.com", password: "password123" },
-  { first_name: "Alice", last_name: "Johnson", email: "alice.johnson@example.com", password: "password123" },
-  { first_name: "Bob", last_name: "Brown", email: "bob.brown@example.com", password: "password123" },
-  { first_name: "Charlie", last_name: "Davis", email: "charlie.davis@example.com", password: "password123" }
+  { first_name: "John", last_name: "Doe", email: "john.doe@example.com", password: "password123", profile_picture: "user1.jpg", phone_number: "416-555-1234", location: "Toronto, ON" },
+  { first_name: "Jane", last_name: "Smith", email: "jane.smith@example.com", password: "password123", profile_picture: "user2.jpg", phone_number: "604-555-5678", location: "Vancouver, BC" },
+  { first_name: "Alice", last_name: "Johnson", email: "alice.johnson@example.com", password: "password123", profile_picture: "user3.jpg", phone_number: "514-555-6789", location: "Montreal, QC" },
+  { first_name: "Bob", last_name: "Brown", email: "bob.brown@example.com", password: "password123", profile_picture: "user4.jpg", phone_number: "403-555-7890", location: "Calgary, AB" },
+  { first_name: "Charlie", last_name: "Davis", email: "charlie.davis@example.com", password: "password123", profile_picture: "user5.jpg", phone_number: "613-555-8901", location: "Ottawa, ON" }
 ]
 
 # Create users and store them in a variable for later use
@@ -138,7 +138,7 @@ listing_images = {
 
 # Add images for each car listing based on the listing_images hash
 listing_images.each do |index, images|
-  car = CarListing.find(index + 1)  # Make sure to get the CarListing object
+  car = CarListing.find_by(id: index + 1)  # Make sure to get the CarListing object
   images.each do |url|
     puts "Adding image for CarListing ##{car.id} with URL: #{url}"
     Image.create!(car_listing: car, url: url)

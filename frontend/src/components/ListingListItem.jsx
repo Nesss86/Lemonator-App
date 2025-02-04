@@ -15,7 +15,7 @@ const ListingListItem = ({ car }) => {
   return (
     <li className="listing-list__item">
     <img className="listing-list__image"
-        src={car.images[0]}
+        src={car.images && car.images[0] ? car.images[0] : 'https://via.placeholder.com/300'}
         alt={`${car.make} ${car.model}`}
       />
 
