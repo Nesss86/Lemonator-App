@@ -23,7 +23,6 @@ function App() {
 
     api.get('/car_listings')
       .then(response => {
-        console.log("Reponse:", response)
         setCarListings(response.data);
       })
       .catch(error => {

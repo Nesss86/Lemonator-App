@@ -10,5 +10,5 @@ class CarListingsController < ApplicationController
     }
   end 
 
-  
+
 end
