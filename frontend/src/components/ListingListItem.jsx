@@ -4,10 +4,18 @@ import "../styles/ListingListItem.scss";
 
 const ListingListItem = ({ car }) => {
 
+  const formatPrice = (cents) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'CAD',
+      minimumFractionDigits: 2,
+    }).format(cents / 100);
+  }
+
   return (
     <li className="listing-list__item">
     <img className="listing-list__image"
-        src={car.image}
+        src={car.images[0]}
         alt={`${car.make} ${car.model}`}
       />
 
@@ -20,7 +28,7 @@ const ListingListItem = ({ car }) => {
         
         <hr />
         <div className="listing-list__car-price">
-        <p>Price: ${car.price}</p>
+        <p>Price: {formatPrice(car.price_cents)}</p>
         </div>
         <button className="listing-list__button">View Details</button>
       </div>

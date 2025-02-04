@@ -1,17 +1,20 @@
 .listing-list__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border: 2px solid #ddd;
   border-radius: 8px;
   padding: 16px;
   margin: 24px;
   background-color: #f5f5f5;
   list-style: none;
-  max-width: 450px;
+  width: 450px;
   text-align: center;
 }
 
 .listing-list__image {
   width: 100%;
-  height: 250px;
+  // height: 250px;
   object-fit: cover;
   border-radius: 8px;
 }
