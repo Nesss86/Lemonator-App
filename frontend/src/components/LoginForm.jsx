@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import api from '../api/api';
 
-const LoginForm = ({ onLoginSuccess }) => {
+function LoginForm({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:3000/login', {
-        email,
-        password,
-      });
-      console.log('Login successful:', response.data);
+      const response = await api.post('/login', { email, password });
+      const user = response.data.user;
 
-      // Save user to localStorage and call the success callback
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      onLoginSuccess(response.data.user);
+      // Store user in local storage
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Notify parent component (App.js)
+      onLoginSuccess(user);
+
+      // Redirect to profile page
+      navigate('/profile');
     } catch (error) {
-      console.error('Error logging in:', error);
+      setError('Invalid email or password');
     }
   };
 
   return (
     <form onSubmit={handleLogin}>
       <h2>Login</h2>
+      {error && <p>{error}</p>}
       <input
         type="email"
         placeholder="Email"
@@ -42,8 +49,9 @@ const LoginForm = ({ onLoginSuccess }) => {
       <button type="submit">Log In</button>
     </form>
   );
-};
+}
 
 export default LoginForm;
+
 
 
