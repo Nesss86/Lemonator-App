@@ -10,6 +10,7 @@ import api from './api/api';
 // import mockCarList from './mocks/mockCarList';
 //import mockCarData from "./mocks/mockCarData";
 import './App.css';
+import NewListing from './components/NewListing';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -54,11 +55,13 @@ function App() {
           }
         />
         <Route path="/profile" element={<ProfilePage user={user} />} />
+        <Route path="/create-listing" element={<NewListing />} />
       </Routes>
       <SearchBar />
    <ul>
     <ListingList cars={carListings} />
    </ul>
+    
     </Router>
   );
 }
