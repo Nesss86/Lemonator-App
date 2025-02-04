@@ -3,13 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
-
 import ProfilePage from './components/ProfilePage/ProfilePage';
-import LandingPage from './components/LandingPage'; // Import the LandingPage component
-import ListingList from './components/ListingList';
+import LandingPage from './components/LandingPage'; // Import LandingPage
 import api from './api/api';
-// import mockCarList from './mocks/mockCarList';
-//import mockCarData from "./mocks/mockCarData";
 
 import './App.css';
 
@@ -36,7 +32,8 @@ function App() {
     <Router>
       <NavigationBar user={user} />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        {/* Pass the carListings as a prop to LandingPage */}
+        <Route path="/" element={<LandingPage cars={carListings} />} />
         <Route
           path="/login"
           element={
@@ -57,17 +54,13 @@ function App() {
         />
         <Route path="/profile" element={<ProfilePage user={user} />} />
       </Routes>
-
-      <SearchBar />
-   <ul>
-    <ListingList cars={carListings} />
-   </ul>
-
     </Router>
   );
 }
 
 export default App;
+
+
 
 
 
