@@ -8,6 +8,7 @@ import LandingPage from './components/LandingPage'; // Import LandingPage
 import api from './api/api';
 
 import './App.css';
+import NewListing from './components/NewListing';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -53,6 +54,7 @@ function App() {
           }
         />
         <Route path="/profile" element={<ProfilePage user={user} />} />
+        <Route path="/create-listing" element={<NewListing />} />
       </Routes>
     </Router>
   );
