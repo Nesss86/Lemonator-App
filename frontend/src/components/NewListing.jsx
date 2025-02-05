@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
-// import "../NewListing.scss";
+import "../styles/NewListing.scss"
 
 
   const NewListing = ({ }) => {
     const navigate = useNavigate(); // Allows redirecting after submission
 
+    // using useState Hook for setting formData 
     const [formData, setFormData] = useState({
       user_id: "",
       category: "",
@@ -25,6 +26,7 @@ import { useNavigate } from "react-router-dom";
       const { name, value } = e.target;
     
       setFormData((prev) => {
+        // Here we have multiplied by 100 to store dollar price in cents in database
         if (name === "price_cents") {
           const priceInCents = Math.round(parseFloat(value) * 100) || "";
           return { ...prev, [name]: priceInCents };
@@ -65,78 +67,80 @@ import { useNavigate } from "react-router-dom";
     
   
     return (
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-xl font-bold mb-4">Create a New Car Listing</h2>
+      <form onSubmit={handleSubmit} className="create-listing__form">
+        <h2 className="create-listing__title">Create a New Car Listing</h2>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Category:
-          <select name="category" value={formData.category} onChange={handleChange} className="w-full border p-2">
+          <select name="category" value={formData.category} onChange={handleChange} className="create-listing__input">
             <option value="">Select Category</option>
             <option value="SUV">SUV</option>
             <option value="Sedan">Sedan</option>
-            <option value="Truck">Truck</option>
+            <option value="Pickup">Pickup</option>
             <option value="Coupe">Coupe</option>
+            <option value="Electric">Electric</option>
+            <option value="Hatchback">Hatchback</option>
           </select>
         </label>
 
-        <label className="block mb-2">
+        <label className="create-listing__label">
           User ID:
-          <input type="text" name="user_id" value={formData.user_id} onChange={handleChange} className="w-full border p-2" />
+          <input type="text" name="user_id" value={formData.user_id} onChange={handleChange} className="create-listing__input" />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Make:
-          <input type="text" name="make" value={formData.make} onChange={handleChange} className="w-full border p-2" />
+          <input type="text" name="make" value={formData.make} onChange={handleChange} className="create-listing__input" />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Model:
-          <input type="text" name="model" value={formData.model} onChange={handleChange} className="w-full border p-2" />
+          <input type="text" name="model" value={formData.model} onChange={handleChange} className="create-listing__input" />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Year:
-          <input type="number" name="year" value={formData.year} onChange={handleChange} className="w-full border p-2" />
+          <input type="number" name="year" value={formData.year} onChange={handleChange} className="create-listing__input" />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Price :
           <input
             type="number"
             name="price_cents"
             value={formData.price_cents / 100} // Show value in dollars
             onChange={handleChange}
-            className="w-full border p-2"
+            className="create-listing__input"
             step="0.01" // Allow decimal input
           />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Color:
-          <input type="text" name="color" value={formData.color} onChange={handleChange} className="w-full border p-2" />
+          <input type="text" name="color" value={formData.color} onChange={handleChange} className="create-listing__input" />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Mileage:
-          <input type="number" name="mileage" value={formData.mileage} onChange={handleChange} className="w-full border p-2" />
+          <input type="number" name="mileage" value={formData.mileage} onChange={handleChange} className="create-listing__input" />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           City:
-          <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full border p-2" />
+          <input type="text" name="city" value={formData.city} onChange={handleChange} className="create-listing__input" />
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Description:
-          <textarea name="description" value={formData.description} onChange={handleChange} className="w-full border p-2" rows="3"></textarea>
+          <textarea name="description" value={formData.description} onChange={handleChange} className="create-listing__input" rows="3"></textarea>
         </label>
   
-        <label className="block mb-2">
+        <label className="create-listing__label">
           Upload Images:
-          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full border p-2" />
+          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="create-listing__input" />
         </label>
   
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700">
+        <button type="submit" className="create-listing__button">
           Submit Listing
         </button>
       </form>
