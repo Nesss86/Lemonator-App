@@ -28,7 +28,7 @@ function NavigationBar() {
       </div>
 
       <ul className="nav-links">
-        <li><Link to="/browse-cars">Browse Cars</Link></li>
+        <li><Link to="/">Browse Cars</Link></li>
         <li><Link to="/help">Help/Contact Us</Link></li>
 
         {user && (
