@@ -1,0 +1,109 @@
+// Define some color variables for a modern look
+$primary-color: black;
+$background-color: #f4f6f8;
+$input-border: #d1d5db;
+$button-hover: #357ABD;
+$text-color: #ffffff; // Lighter text color for labels
+$box-shadow: rgba(0, 0, 0, 0.2);
+$overlay-color: rgba(0, 0, 0, 0.4);
+
+// Updated Form Styling
+.create-listing__form {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.9); // Slightly more opaque for readability
+  border-radius: 12px;
+  box-shadow: 0 8px 20px $box-shadow;
+  font-family: "Inter", sans-serif;
+  position: relative;
+  overflow: hidden;
+
+  // Background image with blur effect
+  background: url('../assets/images/form_car_image.jpg') center/cover no-repeat;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $overlay-color; // Darker overlay for contrast
+    backdrop-filter: blur(12px); // Increased blur intensity
+    z-index: -1;
+    border-radius: 12px;
+  }
+
+  h2 {
+    text-align: center;
+    color: $primary-color;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.6); // Light background for readability
+    padding: 12px;
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  .create-listing__label {
+    display: block;
+    font-weight: 600;
+    color: $text-color; // Lighter color for better contrast
+    margin-bottom: 8px;
+  }
+
+  .create-listing__input,
+  select,
+  textarea {
+    width: 95%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid lighten($input-border, 10%);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.85); // Semi-transparent input background
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+      background: rgba(255, 255, 255, 0.95); // More visible on focus
+    }
+  }
+
+  .create-listing__button {
+    padding: 8px 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: linear-gradient(135deg, #6c63ff, #3f3d9b);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 40px;
+    width: 95%;
+
+    &:hover {
+      background: linear-gradient(135deg, #5351d4, #2c2a75);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    padding: 20px;
+
+    .create-listing__button {
+      font-size: 1rem;
+    }
+  }
+}
