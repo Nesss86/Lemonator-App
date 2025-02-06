@@ -39,3 +39,4 @@ const ListingListItem = ({ car }) => {
 };
 
 export default ListingListItem;
+
