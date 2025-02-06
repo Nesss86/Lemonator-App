@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../styles/ListingListItem.scss";
-import { Link } from 'react-router-dom';
 import api from "../api/api";
 
 const ListingListItem = ({ car }) => {
@@ -63,13 +62,27 @@ const ListingListItem = ({ car }) => {
             Message Seller
           </button>
         </div>
-        <button className="listing-list__button">View Details</button>
+
+        {/* Conditionally display the message form */}
+        {messageFormOpen && (
+          <form className="message-form" onSubmit={handleSendMessage}>
+            <textarea
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
+              placeholder="Type your message here..."
+              required
+            />
+            <button type="submit" className="message-form__send-button">Send Message</button>
+          </form>
+        )}
       </div>
     </li>
   );
 };
 
 export default ListingListItem;
+
+
 
 
 
