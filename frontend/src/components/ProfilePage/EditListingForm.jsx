@@ -4,14 +4,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/NewListing.scss"
 
 
-  const EditListingForm = ({ listings }) => {
+  const EditListingForm = ({ cars }) => {
     const { id } = useParams(); // To get ID from the url
     const navigate = useNavigate(); // Allows redirecting after submission
 
-    const existingListing = listings.find(listing => listing.id.toString() === id); // Find the listing based on the url id
+    const existingListing = cars.find(car => car.id.toString() === id); // Find the listing based on the url id
 
     // using useState Hook for setting formData 
     const [formData, setFormData] = useState({
+      id: "",
       user_id: "",
       category: "",
       make: "",
@@ -28,12 +29,13 @@ import "../../styles/NewListing.scss"
     useEffect(() => {
       if (existingListing) {
         setFormData({
+          id: existingListing.id,
           user_id: existingListing.user_id,
           category: existingListing.category,
           make: existingListing.make,
           model: existingListing.model,
           year: existingListing.year,
-          price_cents: existingListing.price_cents / 100, // Convert cents to dollars
+          price_cents: existingListing.price_cents,
           color: existingListing.color,
           mileage: existingListing.mileage,
           city: existingListing.city,
@@ -69,7 +71,7 @@ import "../../styles/NewListing.scss"
           navigate("/my-listings"); // Redirect after successful submission
         }
       } catch (error) {
-        console.error("❌ Error creating listing:", error);
+        console.error("❌ Error updating listing:", error);
     
         if (error.response) {
           console.error("📥 Server Response:", error.response.data);
@@ -84,7 +86,7 @@ import "../../styles/NewListing.scss"
   
     return (
       <form onSubmit={handleSubmit} className="create-listing__form">
-        <h2 className="create-listing__title">Create a New Car Listing</h2>
+        <h2 className="create-listing__title">Edit Your Listing</h2>
   
         <label className="create-listing__label">
           Category:

@@ -11,6 +11,7 @@ import MessagesPage from './components/MessagesPage';
 import api from './api/api';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import EditListingForm from './components/ProfilePage/EditListingForm';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,6 +49,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage user={user} />} />
         <Route path="/create-listing" element={<NewListing />} />
         <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />
+        <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} />} />
         <Route path="/messages" element={<MessagesPage user={user} />} />
       </Routes>
     </Router>

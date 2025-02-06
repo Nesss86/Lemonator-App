@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
 
   # Car listings routes with index, detail view, and creation capabilities
-  resources :car_listings, only: [:index, :show, :create]  # Allows listing index, viewing details, and creating a new listing
+  resources :car_listings, only: [:index, :show, :create, :update]  # Allows listing index, viewing details, and creating a new listing
 
   # Custom routes for messages
   get '/messages/inbox/:user_id', to: 'messages#inbox', as: 'messages_inbox'  # Fetch received and sent messages for a user

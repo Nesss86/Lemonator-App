@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/ListingListItem.scss";
 import api from "../api/api";
+import { Link } from "react-router-dom";
 
 const ListingListItem = ({ car }) => {
   const [messageFormOpen, setMessageFormOpen] = useState(false);
@@ -55,7 +56,7 @@ const ListingListItem = ({ car }) => {
 
         <div className="listing-list__buttons">
           {/* Keep the View Details button for the modal */}
-          <button className="listing-list__button">View Details</button>
+          <Link to={`/listing/${car.id}`} className="listing-list__button">View Details</Link>
 
           {/* New Message Seller button */}
           <button onClick={handleMessageSeller} className="listing-list__button message-seller-btn">
