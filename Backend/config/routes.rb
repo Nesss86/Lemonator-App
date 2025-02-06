@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'     # For logging in
   get '/profile/:id', to: 'users#show'     # For fetching user details (now expects an ID in the URL)
 
+
+  
+  # Car listings routes
+  resources :car_listings, only: [:index, :show, :create]  # Restrict car listings to only index and show actions
+
+
   # Car listings routes with index, detail view, and creation capabilities
   resources :car_listings, only: [:index, :show, :create]  # Allows listing index, viewing details, and creating a new listing
 
