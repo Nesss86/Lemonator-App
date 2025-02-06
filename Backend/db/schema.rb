@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_04_204921) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_06_021531) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -44,6 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_204921) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "read_status", default: false, null: false
     t.index ["buyer_id"], name: "index_messages_on_buyer_id"
     t.index ["seller_id"], name: "index_messages_on_seller_id"
   end

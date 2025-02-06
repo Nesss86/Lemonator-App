@@ -7,13 +7,13 @@ function UserInfo({ user }) {
     ? user.profile_picture_url
     : `http://localhost:3000/images/profile_pictures/default-profile.jpg`;
 
-  // Randomized reviews with varying star ratings
+  // Randomized reviews with varying potato ratings
   const reviews = [
-    { content: "Great deal, very clean!", stars: 5 },
-    { content: "Best car ever!", stars: 1 },
-    { content: "Responsive and helpful throughout the process.", stars: 5 },
-    { content: "Minor delay in response, but good overall.", stars: 3 },
-    { content: "Car was exactly as described. Happy with my purchase.", stars: 4 },
+    { content: "Spud-tacular! Great deal, very clean!", potatoes: 5 },
+    { content: "A little mashed up, but good overall!", potatoes: 1 },
+    { content: "Baked with kindness! Responsive and helpful throughout.", potatoes: 5 },
+    { content: "A bit undercooked in response time, but great otherwise.", potatoes: 3 },
+    { content: "Crispy deal! Exactly as described. Happy with my purchase.", potatoes: 4 },
   ];
 
   return (
@@ -35,10 +35,10 @@ function UserInfo({ user }) {
           <button className="btn">Edit Profile</button>
         </div>
         <div className="user-info__ratings">
-          <h3>User Ratings & Reviews</h3>
+          <h3>Ratings & Reviews</h3>
           {reviews.map((review, index) => (
             <div key={index} className="user-info__review">
-              <span className="stars">{'⭐'.repeat(review.stars)}</span>
+              <span className="potatoes">{'🥔'.repeat(review.potatoes)}</span>
               <p>{review.content}</p>
             </div>
           ))}
@@ -49,6 +49,7 @@ function UserInfo({ user }) {
 }
 
 export default UserInfo;
+
 
 
 
