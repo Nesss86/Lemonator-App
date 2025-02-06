@@ -166,14 +166,14 @@ puts "Images added successfully!"
 
 
 # Static Messages (Only for the first two listings)
-puts "Creating messages..."
-messages = [
-  Message.create!(buyer: created_users[2], seller: created_users[0], content: "Is the Toyota Corolla still available?"),
-  Message.create!(buyer: created_users[3], seller: created_users[1], content: "I'm interested in the Honda Civic. Can we meet?"),
-  Message.create!(buyer: created_users[4], seller: created_users[0], content: "Can you send more pictures of the Corolla?"),
-  Message.create!(buyer: created_users[0], seller: created_users[1], content: "Would you accept an offer for the Civic?")
-]
+#puts "Creating messages..."
+#messages = [
+  #Message.create!(buyer: created_users[2], seller: created_users[0], content: "Is the Toyota Corolla still available?"),
+  #Message.create!(buyer: created_users[3], seller: created_users[1], content: "I'm interested in the Honda Civic. Can we meet?"),
+  #Message.create!(buyer: created_users[4], seller: created_users[0], content: "Can you send more pictures of the Corolla?"),
+  #Message.create!(buyer: created_users[0], seller: created_users[1], content: "Would you accept an offer for the Civic?")
+#]
 
-puts "Messages created successfully!"
+#puts "Messages created successfully!"
 
 puts "Seeding complete!🍋🍋🍋🍋🍋🍋"

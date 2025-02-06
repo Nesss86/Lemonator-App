@@ -1,27 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "../styles/NavBar.scss";
+import api from '../api/api';
 
 function NavigationBar() {
-  const [user, setUser] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);  // Track dropdown state
+  const [user, setUser] = useState(() => {
+    return JSON.parse(localStorage.getItem('user'));
+  });
+  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('user'));
-    if (loggedInUser) {
-      setUser(loggedInUser);
+    if (user) {
+      fetchUnreadMessages(user.id);
+
+      // Set up polling for unread messages every 10 seconds
+      const interval = setInterval(() => {
+        fetchUnreadMessages(user.id);
+      }, 10000);
+
+      return () => clearInterval(interval);
     }
-  }, []);
+  }, [user]);
+
+  const fetchUnreadMessages = async (userId) => {
+    try {
+      const response = await api.get(`/messages/unread/${userId}`);
+      setHasUnreadMessages(response.data.length > 0);
+    } catch (error) {
+      console.error("Error fetching unread messages:", error);
+    }
+  };
+
+  const handleMessagesClick = async () => {
+    if (user) {
+      await api.patch(`/messages/mark_as_read/${user.id}`);
+      setHasUnreadMessages(false);
+      navigate('/messages');
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null);
-    window.location.href = '/'; // Redirect to home after logout
-  };
-
-  const toggleDropdown = (e) => {
-    e.preventDefault();  // Prevent link navigation
-    setDropdownOpen(!dropdownOpen);
+    window.location.href = '/';
   };
 
   return (
@@ -39,18 +61,23 @@ function NavigationBar() {
 
         {user && (
           <li className="dropdown">
-            {/* My Account is now a link */}
-            <Link to="/profile" className="dropdown-toggle" onClick={toggleDropdown}>
+            <Link to="/profile" className="dropdown-toggle">
               My Account
             </Link>
-            {dropdownOpen && (
-              <ul className="dropdown-menu">
-                <li><Link to="/create-listing">Create a Listing</Link></li>
-                <li><Link to="/my-listings">My Listings</Link></li>
-                <li><Link to="/favourites">Favourites</Link></li>
-                <li><Link to="/messages">Messages</Link></li>
-              </ul>
-            )}
+            <ul className="dropdown-menu">
+              <li><Link to="/create-listing">Create a Listing</Link></li>
+              <li><Link to="/my-listings">My Listings</Link></li>
+              <li><Link to="/favourites">Favourites</Link></li>
+              <li>
+                <button onClick={handleMessagesClick} className="dropdown-link messages-button">
+                  Messages
+                  <span className="messages-icon" aria-label="Unread Messages Notification">
+                    <i className="fa fa-envelope"></i>
+                    {hasUnreadMessages && <span className="notification-dot"></span>}
+                  </span>
+                </button>
+              </li>
+            </ul>
           </li>
         )}
       </ul>
@@ -70,6 +97,7 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+
 
 
 

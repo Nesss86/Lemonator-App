@@ -4,10 +4,13 @@ import NavigationBar from './components/NavigationBar';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import ProfilePage from './components/ProfilePage/ProfilePage';
-import LandingPage from './components/LandingPage'; // Import LandingPage
+import LandingPage from './components/LandingPage';
 import NewListing from './components/NewListing';
+import MessagesPage from './components/MessagesPage';  // Import MessagesPage
 import api from './api/api';
 import './App.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -57,12 +60,16 @@ function App() {
         />
         <Route path="/profile" element={<ProfilePage user={user} />} />
         <Route path="/create-listing" element={<NewListing />} />
+
+        {/* Messages Route */}
+        <Route path="/messages" element={<MessagesPage user={user} />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
 
 
 

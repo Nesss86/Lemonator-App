@@ -1,49 +1,39 @@
-import React, { useState } from 'react';
-import api from '../api/api';
+import React, { useState } from "react";
+import api from "../api/api";  // Use Axios to send the message
 
-function MessageForm({ buyerId, sellerId, onMessageSent }) {
-  const [message, setMessage] = useState('');
-  const [status, setStatus] = useState('');
+const MessageForm = ({ buyerId, sellerId, onMessageSent }) => {
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();  // Prevent default form submission behavior
+    e.preventDefault();
 
     try {
-      const response = await api.post('/messages', {
+      const response = await api.post("/messages", {
         buyer_id: buyerId,
         seller_id: sellerId,
         content: message,
       });
 
-      // Display success message or callback
-      setStatus('Message sent successfully!');
-      onMessageSent(response.data);  // Trigger any callback if needed
-
-      // Clear input after successful send
-      setMessage('');
+      console.log("Message sent successfully", response.data);
+      onMessageSent(response.data);  // Notify parent component
+      setMessage("");  // Clear the input field
     } catch (error) {
-      console.error('Error sending message:', error);
-      setStatus('Failed to send message.');
+      console.error("Error sending message:", error);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your message here..."
-          rows="4"
-          cols="50"
-          required
-        ></textarea>
-        <br />
-        <button type="submit">Send Message</button>
-      </form>
-      {status && <p>{status}</p>}
-    </div>
+    <form onSubmit={handleSubmit} className="message-form">
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Write your message..."
+        required
+      ></textarea>
+      <button type="submit">Send Message</button>
+    </form>
   );
-}
+};
 
 export default MessageForm;
+

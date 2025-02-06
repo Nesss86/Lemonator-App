@@ -1,0 +1,112 @@
+.messages-page {
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f4f4;
+  min-height: 100vh;
+
+  h2 {
+    font-size: 2.5rem;
+    color: #333;
+    text-align: center;
+  }
+
+  .messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .received-messages, .sent-messages {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    color: #444;
+    margin-bottom: 15px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .message-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    small {
+      color: #777;
+    }
+
+    &.received {
+      background-color: #f9f9f9;
+    }
+
+    &.sent {
+      background-color: #e8f7ff;
+    }
+
+    .delete-btn {
+      padding: 5px 10px;
+      color: white;
+      background-color: #ff4d4d;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #d43737;
+      }
+    }
+  }
+
+  .separator {
+    border: 0;
+    height: 2px;
+    background: #ccc;
+    width: 100%;
+  }
+}
+
+.messages-icon {
+  position: relative;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+
+  .notification-dot {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    animation: glow 1.5s infinite alternate;
+  }
+
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 15px rgba(255, 0, 0, 1);
+    }
+  }
+}
+
+
