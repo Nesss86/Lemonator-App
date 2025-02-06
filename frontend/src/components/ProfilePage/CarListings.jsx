@@ -1,5 +1,7 @@
 import React from 'react';
 import "../../styles/CarListings.scss";
+import { Link } from "react-router-dom";
+
 
 function CarListings({ listings }) {
   if (!listings || listings.length === 0) {
@@ -22,7 +24,7 @@ function CarListings({ listings }) {
                 <p>{car.city} - {car.mileage} km</p>
                 <div className="car-price">Price: ${(car.price_cents / 100).toLocaleString()}</div>
               </div>
-              <button className="car-button">View Details</button>
+              <Link to={`/edit-listing/${car.id}`} className="car-button">Edit Listing</Link>
             </div>
           </li>
         ))}
