@@ -1,16 +1,28 @@
 import React from 'react';
 import "../../styles/CarListings.scss";
-import mockCarList from '../../mocks/mockCarList';
 
-function CarListings() {
+function CarListings({ listings }) {
+  if (!listings || listings.length === 0) {
+    return <p>No car listings available.</p>;
+  }
+
   return (
     <div className="car-listings">
       <ul className="car-listings__grid">
-        {mockCarList.map((car, index) => (
+        {listings.map((car) => (
           <li key={car.id} className="car-listings__item">
             <div className="car-image-wrapper">
-              {index === 0 && <span className="sold-badge">Sold</span>} {/* Show "Sold" badge on the first item */}
-              <img className="car-image" src={car.image} alt={`${car.make} ${car.model}`} />
+              <img
+                className="car-image"
+                src={car.images.length > 0 ? car.images[0] : 'https://via.placeholder.com/300'}
+                alt={`${car.make} ${car.model}`}
+              />
+              <div className="car-details">
+                <h3>{car.year} {car.make} {car.model}</h3>
+                <p>{car.city} - {car.mileage} km</p>
+                <div className="car-price">Price: ${(car.price_cents / 100).toLocaleString()}</div>
+              </div>
+              <button className="car-button">View Details</button>
             </div>
           </li>
         ))}
@@ -20,6 +32,9 @@ function CarListings() {
 }
 
 export default CarListings;
+
+
+
 
 
 

@@ -5,10 +5,9 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import LandingPage from './components/LandingPage'; // Import LandingPage
-import api from './api/api';
-
-import './App.css';
 import NewListing from './components/NewListing';
+import api from './api/api';
+import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,8 +32,11 @@ function App() {
     <Router>
       <NavigationBar user={user} />
       <Routes>
-        {/* Pass the carListings as a prop to LandingPage */}
         <Route path="/" element={<LandingPage cars={carListings} />} />
+        
+        {/* My Listings route */}
+        <Route path="/my-listings" element={<ProfilePage user={user} />} />
+        
         <Route
           path="/login"
           element={
@@ -61,6 +63,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

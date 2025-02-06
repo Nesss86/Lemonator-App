@@ -32,36 +32,36 @@ created_users = users.map do |user|
   User.create!(user)
 end
 
+puts "Created users: #{created_users.map(&:id).inspect}"  # Display user IDs for debugging
+
+
 puts "Users added successfully!"
 
 # Static Car Listings
 puts "Creating car listings..."
 car_listings = [
-  { user: created_users[0], category: "Sedan", make: "Toyota", model: "Corolla", year: 2020, price_cents: 2_000_000, color: "Blue", mileage: 30000, city: "Toronto", description: "Reliable and fuel-efficient." },
-  { user: created_users[1], category: "Sedan", make: "Honda", model: "Civic", year: 2019, price_cents: 1_800_000, color: "Red", mileage: 40000, city: "Vancouver", description: "Sporty and stylish." },
-  { user: created_users[2], category: "Pickup", make: "Ford", model: "F-150", year: 2021, price_cents: 4_500_000, color: "Black", mileage: 20000, city: "Toronto", description: "Powerful truck for all terrains." },
-  { user: created_users[3], category: "SUV", make: "BMW", model: "X5", year: 2022, price_cents: 7_500_000, color: "White", mileage: 15000, city: "Montreal", description: "Luxury SUV with advanced features." },
-  { user: created_users[4], category: "Electric", make: "Tesla", model: "Model 3", year: 2023, price_cents: 6_000_000, color: "Silver", mileage: 10000, city: "Toronto", description: "Electric car with autopilot." },
-  { user: created_users[0], category: "SUV", make: "Jeep", model: "Wrangler", year: 2018, price_cents: 3_500_000, color: "Green", mileage: 60000, city: "Vancouver", description: "Off-road beast with 4x4 capability." },
-  { user: created_users[1], category: "Sedan", make: "Nissan", model: "Altima", year: 2020, price_cents: 2_300_000, color: "Grey", mileage: 35000, city: "Montreal", description: "Comfortable daily driver." },
-  { user: created_users[2], category: "Pickup", make: "Chevrolet", model: "Silverado", year: 2021, price_cents: 5_200_000, color: "Blue", mileage: 25000, city: "Vancouver", description: "Heavy-duty and reliable." },
-  { user: created_users[3], category: "Electric", make: "Nissan", model: "Leaf", year: 2022, price_cents: 3_200_000, color: "White", mileage: 12000, city: "Toronto", description: "Affordable electric vehicle." },
-  { user: created_users[4], category: "Coupe", make: "Ford", model: "Mustang", year: 2017, price_cents: 3_900_000, color: "Yellow", mileage: 50000, city: "Toronto", description: "American muscle with a V8 engine." },
-  { user: created_users[0], category: "Hatchback", make: "Volkswagen", model: "Golf", year: 2019, price_cents: 2_700_000, color: "Red", mileage: 33000, city: "Montreal", description: "Compact and sporty." },
-  { user: created_users[1], category: "Sedan", make: "Hyundai", model: "Elantra", year: 2021, price_cents: 2_100_000, color: "Silver", mileage: 20000, city: "Vancouver", description: "Modern design with great fuel economy." },
-  { user: created_users[2], category: "Sedan", make: "Mercedes-Benz", model: "C-Class", year: 2020, price_cents: 6_500_000, color: "Black", mileage: 18000, city: "Montreal", description: "Luxury meets performance." },
-  { user: created_users[3], category: "Pickup", make: "RAM", model: "1500", year: 2022, price_cents: 5_800_000, color: "Blue", mileage: 15000, city: "Toronto", description: "Powerful and capable work truck." },
-  { user: created_users[4], category: "Electric", make: "Chevrolet", model: "Bolt", year: 2023, price_cents: 3_000_000, color: "White", mileage: 10000, city: "Vancouver", description: "Great entry-level EV." },
-  { user: created_users[0], category: "SUV", make: "Toyota", model: "RAV4", year: 2021, price_cents: 4_200_000, color: "Grey", mileage: 22000, city: "Montreal", description: "Reliable and spacious SUV." },
-  { user: created_users[1], category: "Coupe", make: "Mazda", model: "MX-5 Miata", year: 2019, price_cents: 3_300_000, color: "Red", mileage: 28000, city: "Toronto", description: "Fun-to-drive roadster." },
-  { user: created_users[2], category: "Minivan", make: "Honda", model: "Odyssey", year: 2020, price_cents: 3_600_000, color: "Silver", mileage: 40000, city: "Vancouver", description: "Spacious and family-friendly." },
-  { user: created_users[3], category: "SUV", make: "Audi", model: "Q7", year: 2022, price_cents: 7_800_000, color: "Black", mileage: 12000, city: "Montreal", description: "High-tech luxury SUV." },
-  { user: created_users[4], category: "Coupe", make: "Dodge", model: "Challenger", year: 2021, price_cents: 5_500_000, color: "Orange", mileage: 17000, city: "Toronto", description: "Aggressive styling with a powerful engine." }
+  { category: "Sedan", make: "Toyota", model: "Corolla", year: 2020, price_cents: 2_000_000, color: "Blue", mileage: 30000, city: "Toronto", description: "Reliable and fuel-efficient." },
+  { category: "Sedan", make: "Honda", model: "Civic", year: 2019, price_cents: 1_800_000, color: "Red", mileage: 40000, city: "Vancouver", description: "Sporty and stylish." },
+  { category: "Pickup", make: "Ford", model: "F-150", year: 2021, price_cents: 4_500_000, color: "Black", mileage: 20000, city: "Toronto", description: "Powerful truck for all terrains." },
+  { category: "SUV", make: "BMW", model: "X5", year: 2022, price_cents: 7_500_000, color: "White", mileage: 15000, city: "Montreal", description: "Luxury SUV with advanced features." },
+  { category: "Electric", make: "Tesla", model: "Model 3", year: 2023, price_cents: 6_000_000, color: "Silver", mileage: 10000, city: "Toronto", description: "Electric car with autopilot." },
+  { category: "SUV", make: "Jeep", model: "Wrangler", year: 2018, price_cents: 3_500_000, color: "Green", mileage: 60000, city: "Vancouver", description: "Off-road beast with 4x4 capability." },
+  { category: "Sedan", make: "Nissan", model: "Altima", year: 2020, price_cents: 2_300_000, color: "Grey", mileage: 35000, city: "Montreal", description: "Comfortable daily driver." },
+  { category: "Pickup", make: "Chevrolet", model: "Silverado", year: 2021, price_cents: 5_200_000, color: "Blue", mileage: 25000, city: "Vancouver", description: "Heavy-duty and reliable." },
+  { category: "Electric", make: "Nissan", model: "Leaf", year: 2022, price_cents: 3_200_000, color: "White", mileage: 12000, city: "Toronto", description: "Affordable electric vehicle." },
+  { category: "Coupe", make: "Ford", model: "Mustang", year: 2017, price_cents: 3_900_000, color: "Yellow", mileage: 50000, city: "Toronto", description: "American muscle with a V8 engine." },
+  { category: "Hatchback", make: "Volkswagen", model: "Golf", year: 2019, price_cents: 2_700_000, color: "Red", mileage: 33000, city: "Montreal", description: "Compact and sporty." },
+  { category: "Sedan", make: "Hyundai", model: "Elantra", year: 2021, price_cents: 2_100_000, color: "Silver", mileage: 20000, city: "Vancouver", description: "Modern design with great fuel economy." },
+  { category: "Sedan", make: "Mercedes-Benz", model: "C-Class", year: 2020, price_cents: 6_500_000, color: "Black", mileage: 18000, city: "Montreal", description: "Luxury meets performance." },
+  { category: "Pickup", make: "RAM", model: "1500", year: 2022, price_cents: 5_800_000, color: "Blue", mileage: 15000, city: "Toronto", description: "Powerful and capable work truck." },
+  { category: "Electric", make: "Chevrolet", model: "Bolt", year: 2023, price_cents: 3_000_000, color: "White", mileage: 10000, city: "Vancouver", description: "Great entry-level EV." },
+  { category: "SUV", make: "Toyota", model: "RAV4", year: 2021, price_cents: 4_200_000, color: "Grey", mileage: 22000, city: "Montreal", description: "Reliable and spacious SUV." },
+  { category: "Coupe", make: "Mazda", model: "MX-5 Miata", year: 2019, price_cents: 3_300_000, color: "Red", mileage: 28000, city: "Toronto", description: "Fun-to-drive roadster." },
+  { category: "Minivan", make: "Honda", model: "Odyssey", year: 2020, price_cents: 3_600_000, color: "Silver", mileage: 40000, city: "Vancouver", description: "Spacious and family-friendly." },
+  { category: "SUV", make: "Audi", model: "Q7", year: 2022, price_cents: 7_800_000, color: "Black", mileage: 12000, city: "Montreal", description: "High-tech luxury SUV." },
+  { category: "Coupe", make: "Dodge", model: "Challenger", year: 2021, price_cents: 5_500_000, color: "Orange", mileage: 17000, city: "Toronto", description: "Aggressive styling with a powerful engine." }
 ]
 
-car_listings.each do |listing|
-  CarListing.create!(listing)
-end
 
 puts "Car listings created successfully!"
 
@@ -136,14 +136,30 @@ listing_images = {
   ]
 }
 
-# Add images for each car listing based on the listing_images hash
-listing_images.each do |index, images|
-  car = CarListing.find_by(id: index + 1)  # Make sure to get the CarListing object
-  images.each do |url|
-    puts "Adding image for CarListing ##{car.id} with URL: #{url}"
+car_listings.each_with_index do |listing, index|
+  # Dynamically assign the user based on the current index
+  user = created_users[index % created_users.length]
+
+  # Create the car listing
+  car = CarListing.create!(
+    user: user,  # Dynamically assigned user
+    category: listing[:category],
+    make: listing[:make],
+    model: listing[:model],
+    year: listing[:year],
+    price_cents: listing[:price_cents],
+    color: listing[:color],
+    mileage: listing[:mileage],
+    city: listing[:city],
+    description: listing[:description]
+  )
+
+  # Attach images to the car listing
+  listing_images[index].each do |url|
     Image.create!(car_listing: car, url: url)
   end
 end
+
 
 
 puts "Images added successfully!"

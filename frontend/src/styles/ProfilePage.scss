@@ -10,21 +10,27 @@
     font-size: 2.5rem;
     color: #333;
     margin-bottom: 20px;
+    text-align: center;
   }
 
   .profile-top-section {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 30px;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
   }
 
   .user-info {
     flex: 1;
     padding: 10px;
+    text-align: center;
 
     .profile-picture {
       width: 150px;
@@ -33,6 +39,11 @@
       object-fit: cover;
       border: 4px solid #ddd;
       margin-bottom: 15px;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
 
     .contact-details {
@@ -87,6 +98,7 @@
       font-size: 1.8rem;
       color: #444;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .car-listings {
@@ -97,9 +109,15 @@
       .listing-card {
         background-color: #ffffff;
         border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         overflow: hidden;
         position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
         img {
           width: 100%;
@@ -113,9 +131,9 @@
           color: #333;
 
           h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
           }
 
           p {
@@ -134,9 +152,47 @@
           border-radius: 5px;
           font-size: 0.8rem;
           font-weight: 600;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
       }
     }
   }
 }
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+  .profile-listings-section {
+    .car-listings {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  .profile-top-section {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .user-info {
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .profile-listings-section {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .car-listings {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
 

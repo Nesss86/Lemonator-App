@@ -4,6 +4,7 @@ import "../styles/NavBar.scss";
 
 function NavigationBar() {
   const [user, setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);  // Track dropdown state
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -16,6 +17,11 @@ function NavigationBar() {
     localStorage.removeItem('user');
     setUser(null);
     window.location.href = '/'; // Redirect to home after logout
+  };
+
+  const toggleDropdown = (e) => {
+    e.preventDefault();  // Prevent link navigation
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
@@ -33,13 +39,18 @@ function NavigationBar() {
 
         {user && (
           <li className="dropdown">
-            <span className="dropdown-toggle">My Account</span>
-            <ul className="dropdown-menu">
-              <li><Link to="/create-listing">Create a Listing</Link></li>
-              <li><Link to="/my-listings">My Listings</Link></li>
-              <li><Link to="/favourites">Favourites</Link></li>
-              <li><Link to="/messages">Messages</Link></li>
-            </ul>
+            {/* My Account is now a link */}
+            <Link to="/profile" className="dropdown-toggle" onClick={toggleDropdown}>
+              My Account
+            </Link>
+            {dropdownOpen && (
+              <ul className="dropdown-menu">
+                <li><Link to="/create-listing">Create a Listing</Link></li>
+                <li><Link to="/my-listings">My Listings</Link></li>
+                <li><Link to="/favourites">Favourites</Link></li>
+                <li><Link to="/messages">Messages</Link></li>
+              </ul>
+            )}
           </li>
         )}
       </ul>
@@ -59,6 +70,8 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+
+
 
 
 
