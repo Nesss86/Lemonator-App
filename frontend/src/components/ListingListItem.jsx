@@ -1,6 +1,7 @@
 import React from "react";
 
 import "../styles/ListingListItem.scss";
+import { Link } from 'react-router-dom';
 
 const ListingListItem = ({ car }) => {
 
@@ -30,7 +31,7 @@ const ListingListItem = ({ car }) => {
         <div className="listing-list__car-price">
         <p>Price: {formatPrice(car.price_cents)}</p>
         </div>
-        <button className="listing-list__button">View Details</button>
+        <Link to={`/listing/${car.id}`} className="listing-list__button">View Details</Link>
       </div>
     </li>
   );
@@ -38,3 +39,4 @@ const ListingListItem = ({ car }) => {
 };
 
 export default ListingListItem;
+

@@ -22,7 +22,6 @@ function LandingPage({ cars }) {
 
   return (
     <div>
-      <h1>Welcome to Lemonator</h1>
       <SearchBar cars={cars} setFilteredCars={setFilteredCars} />
       <ListingList cars={filteredCars} />
     </div>

@@ -1,0 +1,126 @@
+.listing-item__details{
+  display: flex;
+  width: 1250px;
+  margin: 40px auto;
+  gap: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  height: 600px;
+}
+
+.listing-item__left{
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding-left: 25px;
+}
+
+.listing-item__main-image{
+  width: 100%;
+  max-width: 700px;
+  height: 450px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.listing-item__thumbnails {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.thumbnail:hover {
+  transform: scale(1.1);
+}
+
+.listing-item__description {
+  margin-top: 20px;
+  width: 100%;
+  text-align: left;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.listing-item__description h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Right Section */
+.listing-item__right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+//  height: 550px;
+  padding-right: 25px;
+}
+
+.listing-item__title {
+  font-size: 35px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.listing-item__info {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.listing-item__info p {
+  font-size: 18px;
+  color: black;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+
+.contact-seller {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.contact-seller:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .listing-item__details {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .listing-item__left, .listing-item__right {
+    width: 100%;
+    max-width: 700px;
+  }
+}
