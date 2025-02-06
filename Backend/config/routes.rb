@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/profile/:id', to: 'users#show'     # For fetching user details (now expects an ID in the URL)
   
   # Car listings routes
-  resources :car_listings, only: [:index, :show]  # Restrict car listings to only index and show actions
+  resources :car_listings, only: [:index, :show, :create]  # Restrict car listings to only index and show actions
 
   # Custom route to fetch car listings by user
   get '/users/:id/car_listings', to: 'car_listings#by_user'  # Fetch all car listings for a specific user
