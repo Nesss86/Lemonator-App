@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import LandingPage from './components/LandingPage'; // Import LandingPage
+import ListingItemDetails from './components/ListingItemDetails';
 import api from './api/api';
 
 import './App.css';
@@ -55,6 +56,7 @@ function App() {
         />
         <Route path="/profile" element={<ProfilePage user={user} />} />
         <Route path="/create-listing" element={<NewListing />} />
+        <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />  {/** Route to show individual car details */}
       </Routes>
     </Router>
   );
