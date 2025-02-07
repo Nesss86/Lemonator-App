@@ -32,15 +32,12 @@ const NewListing = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    
-    // Avoid adding duplicate files (e.g., when the same file is selected again)
-    setFormData((prev) => {
-      const uniqueFiles = [
-        ...new Set([...prev.images, ...files].map((file) => file.name)),
-      ];
-      return { ...prev, images: uniqueFiles.map((fileName) => files.find(file => file.name === fileName)) };
-    });
+    setFormData((prev) => ({
+      ...prev,
+      images: files // Directly store the file objects
+    }));
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,6 +84,7 @@ const NewListing = () => {
           className="create-listing__input"
         >
           <option value="">Select Category</option>
+          <option value="Sports">Sports</option>
           <option value="SUV">SUV</option>
           <option value="Sedan">Sedan</option>
           <option value="Pickup">Pickup</option>

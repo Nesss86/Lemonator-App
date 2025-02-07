@@ -16,7 +16,7 @@ function CarListings({ listings }) {
             <div className="car-image-wrapper">
               <img
                 className="car-image"
-                src={car.images.length > 0 ? car.images[0].url : 'https://via.placeholder.com/300'}
+                src={car.images.length > 0 ? car.images[0] : 'https://via.placeholder.com/300'}
                 alt={`${car.make} ${car.model}`}
               />
               <div className="car-details">
