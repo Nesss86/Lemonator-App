@@ -1,56 +1,22 @@
 class MessagesController < ApplicationController
-  skip_before_action :verify_authenticity_token  # For simplicity during testing
+  skip_before_action :verify_authenticity_token  # For simplicity during development/testing
 
-  # GET /messages/unread/:user_id - Get unread messages for a specific user
-  def unread
-    user_id = params[:user_id]
-
-    # Find messages where the user is the recipient (seller) and the status is unread
-    unread_messages = Message.where(seller_id: user_id, read_status: false).order(created_at: :desc)
-
-    render json: unread_messages
-  end
-
-  # GET /messages/inbox/:user_id - Get received and sent messages for a user
-  def inbox
-    user_id = params[:user_id]
-
-    # Received messages (where the user is the seller)
-    received_messages = Message.where(seller_id: user_id).order(created_at: :asc)
-
-    # Sent messages (where the user is the buyer)
-    sent_messages = Message.where(buyer_id: user_id).order(created_at: :asc)
-
-    render json: { received: received_messages, sent: sent_messages }
-  end
-
-  # DELETE /messages/:id - Delete a specific message
-  def destroy
-    message = Message.find(params[:id])
-
-    if message.destroy
-      render json: { success: true, message: 'Message deleted successfully.' }
-    else
-      render json: { success: false, error: 'Failed to delete the message.' }, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH /messages/mark_as_read/:user_id - Mark unread messages as read
-  def mark_as_read
-    user_id = params[:user_id]
-
-    unread_messages = Message.where(seller_id: user_id, read_status: false)
-
-    if unread_messages.update_all(read_status: true)
-      render json: { success: true, message: 'Messages marked as read.' }
-    else
-      render json: { success: false, error: 'Failed to mark messages as read.' }, status: :unprocessable_entity
-    end
-  end
-
-  # POST /messages - Send a new message
+  # POST /conversations/:conversation_id/messages - Send a new message
   def create
-    message = Message.new(message_params)
+    conversation = Conversation.find_by(id: params[:conversation_id])
+    unless conversation
+      return render json: { error: 'Conversation not found.' }, status: :not_found
+    end
+
+    # Determine the receiver of the message
+    receiver_id = (conversation.buyer_id == message_params[:buyer_id]) ? conversation.seller_id : conversation.buyer_id
+
+    message = conversation.messages.new(
+      buyer_id: message_params[:buyer_id],
+      seller_id: receiver_id,  # Assign the correct receiver
+      content: message_params[:content],
+      read_status: false  # Mark messages as unread by default for the receiver
+    )
 
     if message.save
       render json: message, status: :created
@@ -59,10 +25,34 @@ class MessagesController < ApplicationController
     end
   end
 
+  # GET /messages/unread/:user_id - Fetch unread messages for a user (only for the receiver)
+  def unread
+    user_id = params[:user_id]
+
+    unread_messages = Message.where("seller_id = ? AND read_status = ?", user_id, false)
+                             .order(created_at: :desc)
+
+    render json: unread_messages, status: :ok
+  rescue => e
+    render json: { error: "Error fetching unread messages: #{e.message}" }, status: :internal_server_error
+  end
+
+  # PATCH /messages/mark_as_read/:user_id - Mark all unread messages for a user as read
+  def mark_as_read
+    user_id = params[:user_id]
+
+    updated_count = Message.where("seller_id = ? AND read_status = ?", user_id, false)
+                           .update_all(read_status: true)
+
+    render json: { message: "#{updated_count} messages marked as read" }, status: :ok
+  rescue => e
+    render json: { error: "Error marking messages as read: #{e.message}" }, status: :internal_server_error
+  end
+
   private
 
   def message_params
-    params.require(:message).permit(:buyer_id, :seller_id, :content, :read_status)
+    params.require(:message).permit(:buyer_id, :content, :conversation_id)
   end
 end
 

@@ -1,49 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getUnreadMessages, markMessagesAsRead } from "../api/api";
 import "../styles/NavBar.scss";
-import api from '../api/api';
 
 function NavigationBar() {
-  const [user, setUser] = useState(() => {
-    return JSON.parse(localStorage.getItem('user'));
-  });
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) {
-      fetchUnreadMessages(user.id);
-
-      // Set up polling for unread messages every 10 seconds
-      const interval = setInterval(() => {
-        fetchUnreadMessages(user.id);
-      }, 10000);
-
-      return () => clearInterval(interval);
+  // Use useCallback to memoize fetchUnreadMessages and avoid unnecessary re-creation
+  const fetchUnreadMessages = useCallback(async () => {
+    try {
+      if (user && user.id) {
+        const response = await getUnreadMessages(user.id);
+        setHasUnreadMessages(response.status === 200 && response.data.length > 0);
+      }
+    } catch (error) {
+      console.warn("No unread messages or an issue fetching messages for user:", error);
     }
   }, [user]);
 
-  const fetchUnreadMessages = async (userId) => {
-    try {
-      const response = await api.get(`/messages/unread/${userId}`);
-      setHasUnreadMessages(response.data.length > 0);
-    } catch (error) {
-      console.error("Error fetching unread messages:", error);
-    }
-  };
+  useEffect(() => {
+    fetchUnreadMessages();  // Fetch on component mount
+    const interval = setInterval(fetchUnreadMessages, 10000);  // Poll every 10 seconds
+    return () => clearInterval(interval);  // Cleanup interval on unmount
+  }, [fetchUnreadMessages]);
 
   const handleMessagesClick = async () => {
-    if (user) {
-      await api.patch(`/messages/mark_as_read/${user.id}`);
+    try {
+      await markMessagesAsRead(user.id);
       setHasUnreadMessages(false);
-      navigate('/messages');
+      navigate("/messages");
+    } catch (error) {
+      console.error("Error marking messages as read:", error);
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     setUser(null);
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   return (
@@ -61,9 +57,7 @@ function NavigationBar() {
 
         {user && (
           <li className="dropdown">
-            <Link to="/profile" className="dropdown-toggle">
-              My Account
-            </Link>
+            <Link to="/profile" className="dropdown-toggle">My Account</Link>
             <ul className="dropdown-menu">
               <li><Link to="/create-listing">Create a Listing</Link></li>
               <li><Link to="/my-listings">My Listings</Link></li>
@@ -71,7 +65,7 @@ function NavigationBar() {
               <li>
                 <button onClick={handleMessagesClick} className="dropdown-link messages-button">
                   Messages
-                  <span className="messages-icon" aria-label="Unread Messages Notification">
+                  <span className="messages-icon">
                     <i className="fa fa-envelope"></i>
                     {hasUnreadMessages && <span className="notification-dot"></span>}
                   </span>
@@ -97,6 +91,21 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

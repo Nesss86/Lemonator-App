@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/ListingListItem.scss";
-import api from "../api/api";
+import { ensureConversation, sendMessage } from "../api/api";
 import { Link } from "react-router-dom";
 
 const ListingListItem = ({ car }) => {
@@ -15,17 +15,18 @@ const ListingListItem = ({ car }) => {
     event.preventDefault();
     try {
       const buyerId = JSON.parse(localStorage.getItem("user")).id;
-      const sellerId = car.user_id;  // Assuming `car` includes seller's `user_id`.
+      const sellerId = car.user_id;
 
-      await api.post("/messages", {
-        buyer_id: buyerId,
-        seller_id: sellerId,
-        content: messageContent,
-      });
+      // Ensure conversation or create one if necessary
+      const conversationResponse = await ensureConversation(buyerId, sellerId);
+      const conversationId = conversationResponse.data.id;
+
+      // Send the message
+      await sendMessage(conversationId, buyerId, sellerId, messageContent);
 
       alert("Message sent successfully!");
-      setMessageFormOpen(false);  // Close form after sending the message
-      setMessageContent("");  // Clear form
+      setMessageFormOpen(false);
+      setMessageContent("");
     } catch (error) {
       console.error("Error sending message:", error);
       alert("Failed to send message. Please try again.");
@@ -55,16 +56,12 @@ const ListingListItem = ({ car }) => {
         <p>Price: {formatPrice(car.price_cents)}</p>
 
         <div className="listing-list__buttons">
-          {/* Keep the View Details button for the modal */}
           <Link to={`/listing/${car.id}`} className="listing-list__button">View Details</Link>
-
-          {/* New Message Seller button */}
           <button onClick={handleMessageSeller} className="listing-list__button message-seller-btn">
             Message Seller
           </button>
         </div>
 
-        {/* Conditionally display the message form */}
         {messageFormOpen && (
           <form className="message-form" onSubmit={handleSendMessage}>
             <textarea
@@ -82,6 +79,12 @@ const ListingListItem = ({ car }) => {
 };
 
 export default ListingListItem;
+
+
+
+
+
+
 
 
 
