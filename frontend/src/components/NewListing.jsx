@@ -1,73 +1,69 @@
 import React, { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
-import "../styles/NewListing.scss"
+import "../styles/NewListing.scss";
 
+const NewListing = () => {
+  const navigate = useNavigate(); 
 
-  const NewListing = ({ }) => {
-    const navigate = useNavigate(); // Allows redirecting after submission
+  const [formData, setFormData] = useState({
+    user_id: "",
+    category: "",
+    make: "",
+    model: "",
+    year: "",
+    price_cents: "",
+    color: "",
+    mileage: "",
+    city: "",
+    description: "",
+    images: [],
+  });
 
-    // using useState Hook for setting formData 
-    const [formData, setFormData] = useState({
-      user_id: "",
-      category: "",
-      make: "",
-      model: "",
-      year: "",
-      price_cents: "",
-      color: "",
-      mileage: "",
-      city: "",
-      description: "",
-      images: [],
-    });
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-    
-      setFormData((prev) => {
-        // Here we have multiplied by 100 to store dollar price in cents in database
-        if (name === "price_cents") {
-          const priceInCents = Math.round(parseFloat(value) * 100) || "";
-          return { ...prev, [name]: priceInCents };
-        }
-        return { ...prev, [name]: value };
-      });
-    };
-  
-    const handleFileChange = (e) => {
-      const files = Array.from(e.target.files);
-      setFormData((prev) => ({ ...prev, images: files }));
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault(); // Prevent default form submission
-      
-      try {
-        const response = await api.post("/car_listings", formData, {
-          headers: { "Content-Type": "application/json" },
-        });
-    
-        if (response.status === 201) {
-          alert("Listing created successfully!");
-          navigate("/"); // Redirect after successful submission
-        }
-      } catch (error) {
-        console.error("❌ Error creating listing:", error);
-    
-        if (error.response) {
-          console.error("📥 Server Response:", error.response.data);
-          console.error("📡 Status Code:", error.response.status);
-          alert(`Error: ${error.response.data.errors?.join(", ") || "Something went wrong"}`);
-        } else {
-          alert("Failed to connect to the server.");
-        }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      if (name === "price_cents") {
+        return { ...prev, [name]: Math.round(parseFloat(value) * 100) || "" };
       }
-    };
-    
-  
-    return (
-      <form onSubmit={handleSubmit} className="create-listing__form">
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData((prev) => ({ ...prev, images: files }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === "images") {
+        value.forEach((file) => data.append("car_listing[images][]", file));
+      } else {
+        data.append(`car_listing[${key}]`, value);
+      }
+    });
+
+    try {
+      const response = await api.post("/car_listings", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (response.status === 201) {
+        alert("Listing created successfully!");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("❌ Error creating listing:", error);
+      alert("Something went wrong.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="create-listing__form">
         <h2 className="create-listing__title">Create a New Car Listing</h2>
   
         <label className="create-listing__label">
@@ -137,14 +133,15 @@ import "../styles/NewListing.scss"
   
         <label className="create-listing__label">
           Upload Images:
-          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="create-listing__input" />
-        </label>
-  
-        <button type="submit" className="create-listing__button">
+        <input type="file" multiple accept="image/*" onChange={handleFileChange} className="create-listing__input" />
+      </label>
+
+      <button type="submit" className="create-listing__button">
           Submit Listing
         </button>
       </form>
     );
   };
-  
-  export default NewListing;
+
+
+export default NewListing;

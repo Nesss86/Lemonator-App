@@ -3,11 +3,11 @@ class CarListingsController < ApplicationController
 
   # GET /car_listings
   def index
-    @car_listings = CarListing.includes(:images).all
-    
+    @car_listings = CarListing.includes(images_attachments: :blob).all
+
     render json: @car_listings.map { |car_listing| 
       car_listing.as_json.merge(
-        images: car_listing.images.map(&:url)
+        images: car_listing.images.map { |image| url_for(image) }
       )
     }
   end
@@ -34,7 +34,12 @@ class CarListingsController < ApplicationController
     car_listing = CarListing.new(car_listing_params)
 
     if car_listing.save
-      render json: car_listing, include: :images, status: :created
+      if params[:car_listing][:images]
+        params[:car_listing][:images].each do |image|
+          car_listing.images.attach(image)
+        end
+      end
+      render json: car_listing, status: :created
     else
       render json: { error: car_listing.errors.full_messages }, status: :unprocessable_entity
     end
@@ -49,7 +54,10 @@ class CarListingsController < ApplicationController
     end
 
     if car_listing.update(car_listing_params)
-      render json: car_listing, include: :images, status: :ok
+      render json: {
+        message: "Listing updated successfully",
+        car_listing: car_listing.as_json.merge(images: car_listing.images.map { |img| url_for(img) })
+      }, status: :ok
     else
       render json: { error: car_listing.errors.full_messages }, status: :unprocessable_entity
     end
@@ -70,7 +78,7 @@ class CarListingsController < ApplicationController
       :mileage, 
       :city, 
       :description, 
-      images_attributes: [:url]
+      images: []
     )
   end
 

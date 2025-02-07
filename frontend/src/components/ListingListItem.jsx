@@ -15,7 +15,7 @@ const ListingListItem = ({ car }) => {
     event.preventDefault();
     try {
       const buyerId = JSON.parse(localStorage.getItem("user")).id;
-      const sellerId = car.user_id;  // Assuming `car` includes seller's `user_id`.
+      const sellerId = car.user_id; // Assuming `car` includes seller's `user_id`.
 
       await api.post("/messages", {
         buyer_id: buyerId,
@@ -24,8 +24,8 @@ const ListingListItem = ({ car }) => {
       });
 
       alert("Message sent successfully!");
-      setMessageFormOpen(false);  // Close form after sending the message
-      setMessageContent("");  // Clear form
+      setMessageFormOpen(false); // Close form after sending the message
+      setMessageContent(""); // Clear form
     } catch (error) {
       console.error("Error sending message:", error);
       alert("Failed to send message. Please try again.");
@@ -44,7 +44,7 @@ const ListingListItem = ({ car }) => {
     <li className="listing-list__item">
       <img
         className="listing-list__image"
-        src={car.images && car.images[0] ? car.images[0] : "https://via.placeholder.com/300"}
+        src={car.images.length > 0 ? car.images[0] : "https://via.placeholder.com/300"}
         alt={`${car.make} ${car.model}`}
       />
 
@@ -85,10 +85,3 @@ const ListingListItem = ({ car }) => {
 };
 
 export default ListingListItem;
-
-
-
-
-
-
-

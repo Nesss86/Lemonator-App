@@ -36,7 +36,7 @@ class UsersController < ApplicationController
             mileage: car.mileage,
             city: car.city,
             description: car.description,
-            images: car.images.map(&:url)
+            images: car.images.map { |image| url_for(image) }
           }
         end
       }, status: :ok

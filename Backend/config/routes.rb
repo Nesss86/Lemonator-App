@@ -7,13 +7,8 @@ Rails.application.routes.draw do
   get '/profile/:id', to: 'users#show'     # For fetching user details (now expects an ID in the URL)
 
 
-  
-  # Car listings routes
-  resources :car_listings, only: [:index, :show, :create]  # Restrict car listings to only index and show actions
-
-
   # Car listings routes with index, detail view, and creation capabilities
-  resources :car_listings, only: [:index, :show, :create, :update]  # Allows listing index, viewing details, and creating a new listing
+  resources :car_listings
 
   # Custom routes for messages
   get '/messages/inbox/:user_id', to: 'messages#inbox', as: 'messages_inbox'  # Fetch received and sent messages for a user
