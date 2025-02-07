@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import api from "../api/api";  // Use Axios to send the message
 
-const MessageForm = ({ buyerId, sellerId, onMessageSent }) => {
+const MessageForm = ({ buyerId, conversationId, onMessageSent }) => {
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/messages", {
+      const response = await api.post(`/conversations/${conversationId}/messages`, {
         buyer_id: buyerId,
-        seller_id: sellerId,
         content: message,
       });
 
@@ -36,4 +35,5 @@ const MessageForm = ({ buyerId, sellerId, onMessageSent }) => {
 };
 
 export default MessageForm;
+
 
