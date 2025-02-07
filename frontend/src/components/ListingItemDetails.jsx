@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom"; // used useParams hook from react-router-dom
+import { useParams } from "react-router-dom";
 import "../styles/ListingItemDetails.scss";
 
 const ListingItemDetails = ({ cars }) => {
-  const { id } = useParams(); // We grab id from url when user click on View details link in ListingListItem using useParams
-  const car = cars.find((car) => car.id === parseInt(id));   // Find car by id
+  const { id } = useParams();
+  const car = cars.find((car) => car.id === parseInt(id));
 
-  const [mainImage, setMainImage] = useState(null); // Initially set to null
+  const [mainImage, setMainImage] = useState(null);
 
-  // Update mainImage when car is found
   useEffect(() => {
     if (car && car.images?.length > 0) {
-      setMainImage(car.images[0].url);
+      setMainImage(car.images[0]); // Set first image as the main image
     }
   }, [car]);
 
   if (!car) {
-    return <div>Car not found.</div>; // Handle case where car is not found
+    return <div>Car not found.</div>;
   }
 
   const formatPrice = (cents) => {
@@ -29,25 +28,26 @@ const ListingItemDetails = ({ cars }) => {
 
   return (
     <div className='listing-item__details'>
-      {/* Left Section */}
       <div className="listing-item__left">
-        <img className="listing-item__main-image" src={mainImage || "https://via.placeholder.com/300"} alt={`${car.make} ${car.model}`} />
-
+        <img 
+          className="listing-item__main-image" 
+          src={mainImage || "https://via.placeholder.com/300"} 
+          alt={`${car.make} ${car.model}`} 
+        />
+        
         <div className="listing-item__thumbnails">
-          {/** Conditional rendering to check if car images exist then map over individual car */}
           {car.images && car.images.map((img, index) => (
             <img
               key={index}
-              src={img.url}
+              src={img} // Fallback if URL is undefined
               alt={`Thumbnail ${index + 1}`}
               className="thumbnail"
-              onClick={() => setMainImage(img.url)}
+              onClick={() => setMainImage(img)}
             />
           ))}
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="listing-item__right">
         <h1 className='listing-item__title'>{car.year} {car.make} {car.model}</h1>
         <div className="listing-item__info">

@@ -18,13 +18,14 @@ class UsersController < ApplicationController
   end
 
   # GET /profile/:id (updated to match the new route)
+  # UsersController
   def show
     user = User.find_by(id: params[:id])
 
     if user
       render json: {
         user: user_data(user),
-        listings: user.car_listings.includes(:images).map do |car|
+        listings: user.car_listings.includes(images_attachments: :blob).map do |car|
           {
             id: car.id,
             category: car.category,
@@ -44,6 +45,7 @@ class UsersController < ApplicationController
       render json: { error: "User not found" }, status: :not_found
     end
   end
+
 
   private
 

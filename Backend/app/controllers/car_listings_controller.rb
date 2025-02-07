@@ -34,6 +34,7 @@ class CarListingsController < ApplicationController
     car_listing = CarListing.new(car_listing_params)
 
     if car_listing.save
+      # Attach images only after the car_listing is saved
       if params[:car_listing][:images]
         params[:car_listing][:images].each do |image|
           car_listing.images.attach(image)
