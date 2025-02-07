@@ -22,9 +22,21 @@
   padding: 8px 0;
 }
 
+.listing-list__mileage {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.listing-list__price {
+  font-size: 1.1rem;  // Make the price text bigger
+  font-weight: bold;  // Make it bold
+  color: #333;  // Darker text for better visibility
+  margin-top: 8px;  // Add spacing for better alignment
+}
+
 .listing-list__buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-top: 10px;
 }
 
