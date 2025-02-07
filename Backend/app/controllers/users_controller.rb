@@ -1,14 +1,35 @@
 class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+
+  # POST /signup
+  def create
+    if User.exists?(email: params[:email])
+      render json: { error: "Email is already taken" }, status: :unprocessable_entity
+      return
+    end
+
+    user = User.new(user_params)
+
+    if user.save
+      render json: { message: "User created successfully!", user: user_data(user) }, status: :created
+    else
+      render json: { error: user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  # GET /profile/:id (updated to match the new route)
+  # UsersController
+
   # GET /profile/:id - Fetch user profile details
+
   def show
     user = User.find_by(id: params[:id])
 
     if user
       render json: {
         user: user_data(user),
-        listings: user.car_listings.includes(:images).map do |car|
+        listings: user.car_listings.includes(images_attachments: :blob).map do |car|
           {
             id: car.id,
             category: car.category,
@@ -20,7 +41,7 @@ class UsersController < ApplicationController
             mileage: car.mileage,
             city: car.city,
             description: car.description,
-            images: car.images.map(&:url)
+            images: car.images.map { |image| url_for(image) }
           }
         end
       }, status: :ok
@@ -28,6 +49,7 @@ class UsersController < ApplicationController
       render json: { error: "User not found" }, status: :not_found
     end
   end
+
 
   private
 
