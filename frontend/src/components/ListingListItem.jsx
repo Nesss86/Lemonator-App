@@ -51,9 +51,12 @@ const ListingListItem = ({ car }) => {
 
       <div className="listing-list__car-details">
         <h3>{car.year} {car.make} {car.model}</h3>
-        <p>Mileage: {car.mileage} km</p>
-        <p>Location: {car.city}</p>
-        <p>Price: {formatPrice(car.price_cents)}</p>
+        <p className="listing-list__mileage">
+          <span>Mileage: {car.mileage} km</span>
+          <span>Location: {car.city}</span>
+        </p>
+        <hr />
+        <p className="listing-list__price">Price: {formatPrice(car.price_cents)}</p>
 
         <div className="listing-list__buttons">
           <Link to={`/listing/${car.id}`} className="listing-list__button">View Details</Link>
