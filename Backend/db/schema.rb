@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema[8.0].define(version: 2025_02_07_184153) do
-
+ActiveRecord::Schema[8.0].define(version: 2025_02_08_011720) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,14 +66,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_184153) do
     t.integer "seller_id"
   end
 
-  create_table "images", force: :cascade do |t|
-    t.bigint "car_listing_id", null: false
-    t.text "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["car_listing_id"], name: "index_images_on_car_listing_id"
-  end
-
   create_table "messages", force: :cascade do |t|
     t.bigint "buyer_id", null: false
     t.bigint "seller_id", null: false
@@ -105,7 +95,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_184153) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "car_listings", "users"
-  add_foreign_key "images", "car_listings"
   add_foreign_key "messages", "conversations", on_delete: :cascade
   add_foreign_key "messages", "users", column: "buyer_id"
   add_foreign_key "messages", "users", column: "seller_id"
