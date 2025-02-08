@@ -3,90 +3,37 @@ class CarListingsController < ApplicationController
 
   # GET /car_listings
   def index
-    @car_listings = CarListing.includes(:images).all
-    
-    render json: @car_listings.map { |car_listing| 
-      car_listing.as_json.merge(
-        images: car_listing.images.map(&:url)
-      )
-    }
-  end
+    begin
+      @car_listings = CarListing.includes(:images, :user).all
 
-  # GET /users/:id/car_listings
-  def by_user
-    user = User.find_by(id: params[:id])
-    if user
-      listings = user.car_listings.includes(:images)
+      render json: @car_listings.map { |car_listing| 
+        {
+          id: car_listing.id,
+          category: car_listing.category,
+          make: car_listing.make,
+          model: car_listing.model,
+          year: car_listing.year,
+          price_cents: car_listing.price_cents,
+          color: car_listing.color,
+          mileage: car_listing.mileage,
+          city: car_listing.city,
+          description: car_listing.description,
+          images: car_listing.images.map(&:url),
+          user: car_listing.user ? {
+            id: car_listing.user.id,
+            name: [car_listing.user.first_name, car_listing.user.last_name].compact.join(" ").presence || "Unknown Seller",
+            email: car_listing.user.email || "Not available"
+          } : {}
+        }
+      }, status: :ok
 
-      render json: listings.map { |car| car_data(car) }, status: :ok
-    else
-      render json: { error: "User not found" }, status: :not_found
+    rescue => e
+      render json: { error: "Failed to fetch car listings: #{e.message}" }, status: :internal_server_error
     end
-  end
-
-  # Action to get create listing form 
-  def new
-    @car_listing = CarListing.new
-  end
-
-  # Action to post new listing to the database
-  def create
-    car_listing = CarListing.new(car_listing_params)
-
-    if car_listing.save
-      render json: car_listing, include: :images, status: :created
-    else
-      render json: { error: car_listing.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /car_listings/:id
-  def update
-    car_listing = CarListing.find_by(id: params[:id])
-
-    if car_listing.nil?
-      return render json: { error: "Car listing not found" }, status: :not_found
-    end
-
-    if car_listing.update(car_listing_params)
-      render json: car_listing, include: :images, status: :ok
-    else
-      render json: { error: car_listing.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
-
-
-  private
-
-  def car_listing_params
-    params.require(:car_listing).permit(
-      :user_id,
-      :category, 
-      :make, 
-      :model, 
-      :year, 
-      :price_cents, 
-      :color, 
-      :mileage, 
-      :city, 
-      :description, 
-      images_attributes: [:url]
-    )
-  end
-
-  def car_data(car)
-    {
-      id: car.id,
-      category: car.category,
-      make: car.make,
-      model: car.model,
-      year: car.year,
-      price_cents: car.price_cents,
-      color: car.color,
-      mileage: car.mileage,
-      city: car.city,
-      description: car.description,
-      images: car.images.map(&:url)
-    }
   end
 end
+
+
+
+
+
