@@ -21,9 +21,9 @@ function NavigationBar() {
   }, [user]);
 
   useEffect(() => {
-    fetchUnreadMessages();  // Fetch on component mount
-    const interval = setInterval(fetchUnreadMessages, 10000);  // Poll every 10 seconds
-    return () => clearInterval(interval);  // Cleanup interval on unmount
+    fetchUnreadMessages(); // Fetch on component mount
+    const interval = setInterval(fetchUnreadMessages, 10000); // Poll every 10 seconds
+    return () => clearInterval(interval); // Cleanup interval on unmount
   }, [fetchUnreadMessages]);
 
   const handleMessagesClick = async () => {
@@ -49,6 +49,11 @@ function NavigationBar() {
           <Link to="/">Lemonator</Link>
         </div>
         <img src="/lemon3.svg" alt="Lemon Icon" className="lemon-icon" />
+        {user && (
+          <div className="welcome-message">
+            <p>Welcome, {user.first_name}!</p>
+          </div>
+        )}
       </div>
 
       <ul className="nav-links">
@@ -91,6 +96,11 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+
+
+
+
+
 
 
 

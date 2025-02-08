@@ -117,7 +117,7 @@ const MessagesPage = ({ user }) => {
               onClick={handleMarkAsRead}
             >
               <h3>
-                Conversation with User {convo.other_user_id}
+                Conversation with {convo.other_user ? convo.other_user.name : `User ${convo.other_user_id}`}
                 {convo.messages.some((msg) => msg.seller_id === user.id && !msg.read_status) && (
                   <span className="notification-badge">Unread</span>
                 )}
@@ -127,7 +127,10 @@ const MessagesPage = ({ user }) => {
                   convo.messages.map((msg) => (
                     <li key={msg.id} className={`message-item ${msg.buyer_id === user.id ? "sent" : "received"}`}>
                       <p>
-                        <strong>{msg.buyer_id === user.id ? "You" : `User ${msg.buyer_id}`}:</strong> {msg.content}
+                        <strong>
+                          {msg.buyer_id === user.id ? "You" : msg.sender_name || `User ${msg.buyer_id}`}:
+                        </strong>{" "}
+                        {msg.content}
                       </p>
                       <p>
                         <small>{new Date(msg.created_at).toLocaleString()}</small>

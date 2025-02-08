@@ -15,14 +15,16 @@ const ListingListItem = ({ car }) => {
     event.preventDefault();
     try {
       const buyerId = JSON.parse(localStorage.getItem("user")).id;
+      const sellerId = car.user?.id;
 
-      const sellerId = car.user_id; // Assuming `car` includes seller's `user_id`.
+      if (!sellerId) {
+        alert("Cannot send a message. Seller information is missing.");
+        return;
+      }
 
-      // Ensure conversation or create one if necessary
       const conversationResponse = await ensureConversation(buyerId, sellerId);
       const conversationId = conversationResponse.data.id;
 
-      // Send the message
       await sendMessage(conversationId, buyerId, sellerId, messageContent);
 
       alert("Message sent successfully!");
@@ -54,6 +56,7 @@ const ListingListItem = ({ car }) => {
 
       <div className="listing-list__car-details">
         <h3>{car.year} {car.make} {car.model}</h3>
+        <p>Seller: {car.user?.name || "Unknown Seller"}</p>
         <p className="listing-list__mileage">
           <span>Mileage: {car.mileage} km</span>
           <span>Location: {car.city}</span>
@@ -85,8 +88,6 @@ const ListingListItem = ({ car }) => {
 };
 
 export default ListingListItem;
-
-
 
 
 
