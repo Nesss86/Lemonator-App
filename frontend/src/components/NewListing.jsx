@@ -3,7 +3,7 @@ import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import "../styles/NewListing.scss";
 
-const NewListing = () => {
+const NewListing = ({ setCars }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -63,6 +63,7 @@ const NewListing = () => {
 
       if (response.status === 201) {
         alert("Listing created successfully!");
+        setCars((prevCars) => [...prevCars, response.data]);
         navigate("/");
       }
     } catch (error) {
