@@ -1,5 +1,5 @@
 class ConversationsController < ApplicationController
-  skip_before_action :verify_authenticity_token  # For simplicity during development/testing
+  skip_before_action :verify_authenticity_token
 
   # GET /conversations?user_id=:user_id
   def index
@@ -9,21 +9,46 @@ class ConversationsController < ApplicationController
       return render json: { error: "User ID is required." }, status: :bad_request
     end
 
-    # Find all conversations where the user is either the buyer or the seller
-    conversations = Conversation.includes(:messages)
+    conversations = Conversation.includes(:messages, :buyer, :seller)
                                 .where("buyer_id = :user_id OR seller_id = :user_id", user_id: user_id)
                                 .order(updated_at: :desc)
 
-    render json: conversations.as_json(
-      include: {
-        messages: {
-          only: [:id, :buyer_id, :seller_id, :content, :created_at, :read_status]
-        }
+    response = conversations.map do |convo|
+      # Determine the other user based on the current user ID
+      other_user = (convo.buyer_id.to_s == user_id.to_s) ? convo.seller : convo.buyer
+
+      {
+        id: convo.id,
+        buyer_id: convo.buyer_id,
+        seller_id: convo.seller_id,
+        updated_at: convo.updated_at,
+        other_user: other_user ? {
+          id: other_user.id,
+          first_name: other_user.first_name || "Unknown",
+          last_name: other_user.last_name || "",
+          email: other_user.email || "Not provided"
+        } : nil,
+        messages: convo.messages.map do |msg|
+          {
+            id: msg.id,
+            buyer_id: msg.buyer_id,
+            seller_id: msg.seller_id,
+            content: msg.content,
+            created_at: msg.created_at,
+            read_status: msg.read_status,
+            sender_first_name: msg.buyer_id == convo.buyer_id ? convo.buyer.first_name : convo.seller.first_name,
+            sender_last_name: msg.buyer_id == convo.buyer_id ? convo.buyer.last_name : convo.seller.last_name,
+          }
+        end
       }
-    ), status: :ok
+    end
+
+    render json: response, status: :ok
+  rescue => e
+    render json: { error: "Failed to fetch conversations: #{e.message}" }, status: :internal_server_error
   end
 
-  # POST /conversations - Ensure a conversation exists or create one
+  # POST /conversations - Create or find a conversation
   def create
     buyer_id = params[:buyer_id]
     seller_id = params[:seller_id]
@@ -32,7 +57,6 @@ class ConversationsController < ApplicationController
       return render json: { error: "Both buyer_id and seller_id are required." }, status: :bad_request
     end
 
-    # Find or create a conversation
     conversation = Conversation.where(
       "(buyer_id = :buyer AND seller_id = :seller) OR (buyer_id = :seller AND seller_id = :buyer)",
       buyer: buyer_id, seller: seller_id
@@ -61,6 +85,10 @@ class ConversationsController < ApplicationController
     render json: { error: "Failed to delete conversation: #{e.message}" }, status: :internal_server_error
   end
 end
+
+
+
+
 
 
 

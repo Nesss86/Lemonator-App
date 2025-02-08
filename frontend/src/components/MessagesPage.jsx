@@ -6,17 +6,7 @@ const MessagesPage = ({ user }) => {
   const [conversations, setConversations] = useState([]);
   const [newReplies, setNewReplies] = useState({});
   const [unreadMessages, setUnreadMessages] = useState(0);
-
-  // Fetch unread messages count only if the current user is the recipient (not the sender)
-  const fetchUnreadMessages = useCallback(async () => {
-    try {
-      const response = await api.get(`/messages/unread/${user.id}`);
-      const unreadForUser = response.data.filter((msg) => msg.seller_id === user.id);
-      setUnreadMessages(unreadForUser.length);
-    } catch (error) {
-      console.error("Error fetching unread messages:", error);
-    }
-  }, [user.id]);
+  const [error, setError] = useState(null);
 
   // Fetch conversations for the current user
   const fetchConversations = useCallback(async () => {
@@ -24,9 +14,22 @@ const MessagesPage = ({ user }) => {
       const response = await api.get(`/conversations?user_id=${user.id}`);
       if (Array.isArray(response.data)) {
         setConversations(response.data);
+      } else {
+        setError("Unexpected response format.");
       }
-    } catch (error) {
-      console.error("Error fetching conversations:", error);
+    } catch (err) {
+      console.error("Error fetching conversations:", err);
+      setError("Failed to load conversations.");
+    }
+  }, [user.id]);
+
+  // Fetch unread messages
+  const fetchUnreadMessages = useCallback(async () => {
+    try {
+      const response = await api.get(`/messages/unread/${user.id}`);
+      setUnreadMessages(response.data.length || 0);
+    } catch (err) {
+      console.error("Error fetching unread messages:", err);
     }
   }, [user.id]);
 
@@ -35,47 +38,40 @@ const MessagesPage = ({ user }) => {
     fetchUnreadMessages();
   }, [fetchConversations, fetchUnreadMessages]);
 
-  // Clear unread messages when clicking on a conversation
+  // Mark messages as read
   const handleMarkAsRead = async () => {
     try {
       await api.patch(`/messages/mark_as_read/${user.id}`);
-      setUnreadMessages(0);  // Clear unread state locally
-    } catch (error) {
-      console.error("Error marking messages as read:", error);
+      setUnreadMessages(0);
+    } catch (err) {
+      console.error("Error marking messages as read:", err);
     }
   };
 
-  // Handle input change for new replies
+  // Handle input change for replies
   const handleReplyChange = (conversationId, value) => {
     setNewReplies((prev) => ({ ...prev, [conversationId]: value }));
   };
 
   // Handle reply submission
-  const handleReplySubmit = async (e, conversationId, recipientId) => {
+  const handleReplySubmit = async (e, conversationId) => {
     e.preventDefault();
-
-    if (!newReplies[conversationId]?.trim()) {
-      return alert("Reply cannot be empty!");
+    const replyContent = newReplies[conversationId]?.trim();
+    if (!replyContent) {
+      alert("Reply cannot be empty.");
+      return;
     }
 
     try {
       await api.post(`/conversations/${conversationId}/messages`, {
         buyer_id: user.id,
-        content: newReplies[conversationId],
+        content: replyContent,
       });
-
-      // Clear the reply input field and refresh conversations
-      setNewReplies((prev) => ({ ...prev, [conversationId]: "" }));
-
-      // Refresh only if the recipient is NOT the sender
-      if (recipientId !== user.id) {
-        fetchUnreadMessages();
-      }
-
-      fetchConversations();
-    } catch (error) {
-      console.error("Error sending reply:", error);
-      alert("Failed to send the message. Please try again.");
+      setNewReplies((prev) => ({ ...prev, [conversationId]: "" })); // Clear input
+      fetchConversations(); // Refresh conversations after sending message
+    } catch (err) {
+      console.error("Error sending reply:", err);
+      alert("Failed to send the message.");
     }
   };
 
@@ -87,20 +83,25 @@ const MessagesPage = ({ user }) => {
       await api.delete(`/conversations/${conversationId}`);
       setConversations((prev) => prev.filter((convo) => convo.id !== conversationId));
       fetchUnreadMessages();
-    } catch (error) {
-      console.error("Error deleting conversation:", error);
+    } catch (err) {
+      console.error("Error deleting conversation:", err);
       alert("Failed to delete the conversation.");
     }
   };
+
+  // Display any errors encountered
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
   return (
     <div className="messages-page">
       <h2>Conversations</h2>
 
-      {/* Unread notification */}
+      {/* Unread message notification */}
       {unreadMessages > 0 && (
         <div className="notification-banner">
-          <p>You have {unreadMessages} unread messages.</p>
+          <p>You have {unreadMessages} unread message(s).</p>
         </div>
       )}
 
@@ -108,59 +109,65 @@ const MessagesPage = ({ user }) => {
         {conversations.length === 0 ? (
           <p>No conversations available.</p>
         ) : (
-          conversations.map((convo) => (
-            <div
-              key={convo.id}
-              className={`conversation ${convo.messages.some(
-                (msg) => msg.seller_id === user.id && !msg.read_status
-              ) ? "unread" : ""}`}
-              onClick={handleMarkAsRead}
-            >
-              <h3>
-                Conversation with {convo.other_user ? convo.other_user.name : `User ${convo.other_user_id}`}
-                {convo.messages.some((msg) => msg.seller_id === user.id && !msg.read_status) && (
-                  <span className="notification-badge">Unread</span>
-                )}
-              </h3>
-              <ul className="message-list">
-                {Array.isArray(convo.messages) && convo.messages.length > 0 ? (
-                  convo.messages.map((msg) => (
-                    <li key={msg.id} className={`message-item ${msg.buyer_id === user.id ? "sent" : "received"}`}>
-                      <p>
-                        <strong>
-                          {msg.buyer_id === user.id ? "You" : msg.sender_name || `User ${msg.buyer_id}`}:
-                        </strong>{" "}
-                        {msg.content}
-                      </p>
-                      <p>
+          conversations.map((convo) => {
+            // Handle undefined issues by falling back to default values
+            const otherUser = convo.other_user || { first_name: "Unknown", last_name: "" };
+            const otherUserName = `${otherUser.first_name} ${otherUser.last_name}`.trim();
+
+            return (
+              <div
+                key={convo.id}
+                className={`conversation ${convo.messages.some(
+                  (msg) => msg.seller_id === user.id && !msg.read_status
+                ) ? "unread" : ""}`}
+                onClick={handleMarkAsRead}
+              >
+                <h3>
+                  Conversation with {otherUserName}
+                  {convo.messages.some((msg) => msg.seller_id === user.id && !msg.read_status) && (
+                    <span className="notification-badge">Unread</span>
+                  )}
+                </h3>
+
+                {/* Display messages */}
+                <ul className="message-list">
+                  {Array.isArray(convo.messages) && convo.messages.length > 0 ? (
+                    convo.messages.map((msg) => (
+                      <li key={msg.id} className={`message-item ${msg.buyer_id === user.id ? "sent" : "received"}`}>
+                        <p>
+                          <strong>
+                            {msg.buyer_id === user.id ? "You" : `${msg.sender_first_name} ${msg.sender_last_name}`}:
+                          </strong>{" "}
+                          {msg.content}
+                        </p>
                         <small>{new Date(msg.created_at).toLocaleString()}</small>
-                      </p>
-                    </li>
-                  ))
-                ) : (
-                  <p>No messages in this conversation.</p>
-                )}
-              </ul>
+                      </li>
+                    ))
+                  ) : (
+                    <p>No messages in this conversation.</p>
+                  )}
+                </ul>
 
-              {/* Reply Form */}
-              <form onSubmit={(e) => handleReplySubmit(e, convo.id, convo.other_user_id)} className="reply-form">
-                <input
-                  type="text"
-                  className="reply-input"
-                  placeholder="Type your reply..."
-                  value={newReplies[convo.id] || ""}
-                  onChange={(e) => handleReplyChange(convo.id, e.target.value)}
-                  required
-                />
-                <button type="submit" className="reply-btn">Send Reply</button>
-              </form>
+                {/* Reply Form */}
+                <form onSubmit={(e) => handleReplySubmit(e, convo.id)} className="reply-form">
+                  <input
+                    type="text"
+                    className="reply-input"
+                    placeholder="Type your reply..."
+                    value={newReplies[convo.id] || ""}
+                    onChange={(e) => handleReplyChange(convo.id, e.target.value)}
+                    required
+                  />
+                  <button type="submit" className="reply-btn">Send Reply</button>
+                </form>
 
-              {/* Delete Button */}
-              <button onClick={() => handleDeleteConversation(convo.id)} className="delete-conversation-btn">
-                Delete Conversation
-              </button>
-            </div>
-          ))
+                {/* Delete Conversation Button */}
+                <button onClick={() => handleDeleteConversation(convo.id)} className="delete-conversation-btn">
+                  Delete Conversation
+                </button>
+              </div>
+            );
+          })
         )}
       </div>
     </div>
@@ -168,6 +175,10 @@ const MessagesPage = ({ user }) => {
 };
 
 export default MessagesPage;
+
+
+
+
 
 
 
