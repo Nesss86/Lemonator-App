@@ -5,18 +5,18 @@ import ListingList from './ListingList';
 import { useState, useEffect } from 'react';
 
 function LandingPage({ cars }) {
-  const [filteredCars, setFilteredCars] = useState(cars); // Manage filtered cars
   const location = useLocation(); // Get the current location
+  const [filteredCars, setFilteredCars] = useState([]); // Manage filtered cars
 
-  // Update filteredCars when cars prop changes
   useEffect(() => {
-    setFilteredCars(cars);
+    if (cars && cars.length > 0) {
+      setFilteredCars([...cars].sort((a, b) => a.id - b.id));
+    }
   }, [cars]);
 
-  // Reset filteredCars to show all cars when the route changes to "/"
   useEffect(() => {
-    if (location.pathname === '/') {
-      setFilteredCars(cars);
+    if (location.pathname === '/' && cars) {
+      setFilteredCars([...cars].sort((a, b) => a.id - b.id));
     }
   }, [location, cars]);
 
