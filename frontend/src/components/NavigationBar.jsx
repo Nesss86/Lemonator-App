@@ -58,7 +58,7 @@ function NavigationBar() {
 
       <ul className="nav-links">
         <li><Link to="/">Browse Cars</Link></li>
-        <li><Link to="/help">Help/Contact Us</Link></li>
+        <li><Link to="/about">About</Link></li>
 
         {user && (
           <li className="dropdown">
