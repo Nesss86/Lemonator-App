@@ -12,6 +12,7 @@ import api from './api/api';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import EditListingForm from './components/ProfilePage/EditListingForm';
+import AboutPage from './components/AboutPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -37,6 +38,7 @@ function App() {
       <NavigationBar user={user} />
       <Routes>
         <Route path="/" element={<LandingPage cars={carListings} />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/my-listings" element={<ProfilePage user={user} />} />
         <Route path="/login" element={<LoginForm onLoginSuccess={(user) => {
           setUser(user);

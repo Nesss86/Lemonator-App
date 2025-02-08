@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+.about-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #f4f4f8;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+.about-page strong {
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.3));
+  color: rgb(20, 16, 16);
+}
+
+.lemon-icon {
+  display: block;
+  margin: 0 auto 20px;
+  width: 70px;
+  height: auto;
+  transform: rotate(-45deg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.3));
+
+    &:hover {
+      transform: rotate(-10deg) scale(1.1);
+      filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.5));
+    }
+}
+
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #444;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+li {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+a {
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #4b48c8;
+}
