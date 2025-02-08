@@ -12,9 +12,12 @@ puts "Seeding database..."
 
 # Destroy existing records
 Message.destroy_all
-Image.destroy_all
 CarListing.destroy_all
 User.destroy_all
+
+# Ensure Active Storage blobs are removed
+ActiveStorage::Attachment.destroy_all
+ActiveStorage::Blob.destroy_all
 
 # Static Users
 puts "Adding users..."
@@ -68,72 +71,29 @@ puts "Car listings created successfully!"
 # Static Images (Multiple per Listing)
 puts "Adding images..."
 
-# Image URLs for each car listing (Can add more images directly here for any listing)
-listing_images = {
-  0 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasezNYUj1qED1B7iKjFg2Yw9aPTxyLfvCzUtIc",
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasg2244SNuSjpAzo8EagYryKVmJwck6G5nZBPh",
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasdS0nGzZsjQRi6zfZWMYyLAa9SDcX4wh20pbn"
-  ],
-  1 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasgOWEHkNuSjpAzo8EagYryKVmJwck6G5nZBPh",
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasOFsePBrDkwyWSEx3dYXHBrR941fPh8tpejm6",
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasdMjk4UZsjQRi6zfZWMYyLAa9SDcX4wh20pbn"
-  ],
-  2 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasTINXHE5QkRi658xYwEmJbqVATdnfZUsoXup3"
-  ],
-  3 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasmTMUScO21BtHjYDrqR8GhcawdIl6k73XfmNU"
-  ],
-  4 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasfMKbVN0ADpITXSzKUOrGfY1nmbCNHdqZeox7"
-  ],
-  5 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasFNKm5OpcSkOLQ3HjrsiCvpE8Yg1Jq5TxWeuA"
-  ],
-  6 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMas6cix3wqX1mq56gBKwEfzrd9oD4Gh2OCe0UiP"
-  ],
-  7 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasVQ0utXeJn81tzGdi4lTuMcRDkbq6yhg92ePf"
-  ],
-  8 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasSnkh4bBzNwHo5yU9xgheJpMPCqQXfTEdbZRB"
-  ],
-  9 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMaseMEOVv1qED1B7iKjFg2Yw9aPTxyLfvCzUtIc"
-  ],
-  10 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasQbwysLkY97KOD3vQXFLgZkNzICSpJ6WuoxET"
-  ],
-  11 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMas2uS349y70xjM4OltQJNsv6I3FbDkKfc21hyi"
-  ],
-  12 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMas6LW7F5qX1mq56gBKwEfzrd9oD4Gh2OCe0UiP"
-  ],
-  13 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasFhJ1XbpcSkOLQ3HjrsiCvpE8Yg1Jq5TxWeuA"
-  ],
-  14 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMas22tAFCy70xjM4OltQJNsv6I3FbDkKfc21hyi"
-  ],
-  15 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasFQgZi2pcSkOLQ3HjrsiCvpE8Yg1Jq5TxWeuA"
-  ],
-  16 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasZ2I4xHv7ULTYwvbkE23j4mo1pzdPf0cNly8S"
-  ],
-  17 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasHSRJV8PD9MBuYUZEVO3an6IP2NmtCeHoF0iq"
-  ],
-  18 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasfWEDfRr0ADpITXSzKUOrGfY1nmbCNHdqZeox"
-  ],
-  19 => [
-    "https://pr7a1ybbux.ufs.sh/f/yMDF6NTAbMasS2E6P9BzNwHo5yU9xgheJpMPCqQXfTEdbZRB"
-  ]
+# Define local image files for each listing
+local_images = {
+  0 => ["car01_01.jpg", "car01_02.jpeg", "car01_03.webp"],
+  1 => ["car02_01.jpeg", "car02_02.webp", "car02_03.avif"],
+  2 => ["car03.jpg"],
+  3 => ["car04.jpg"],
+  4 => ["car05.jpg"],
+  5 => ["car06.jpg"],
+  6 => ["car07.webp"],
+  7 => ["car08.jpg"],
+  8 => ["car09.jpg"],
+  9 => ["car10.jpg"],
+  10 => ["car11.webp"],
+  11 => ["car12.jpg"],
+  12 => ["car13.jpg"],
+  13 => ["car14.webp"],
+  14 => ["car15.jpg"],
+  15 => ["car16.webp"],
+  16 => ["car17.jpg"],
+  17 => ["car18.avif"],
+  18 => ["car19.avif"],
+  19 => ["car20.jpg"],
+
 }
 
 car_listings.each_with_index do |listing, index|
@@ -155,8 +115,11 @@ car_listings.each_with_index do |listing, index|
   )
 
   # Attach images to the car listing
-  listing_images[index].each do |url|
-    Image.create!(car_listing: car, url: url)
+  if local_images[index]
+    local_images[index].each do |filename|
+      file_path = Rails.root.join("db/seeds/images/#{filename}")
+      car.images.attach(io: File.open(file_path), filename: filename, content_type: "image/jpeg")
+    end
   end
 end
 
