@@ -6,7 +6,7 @@ import SignupForm from './components/SignupForm';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import LandingPage from './components/LandingPage';
 import NewListing from './components/NewListing';
-import ListingItemDetails from './components/ListingItemDetails'; 
+import ListingItemDetails from './components/ListingItemDetails';
 import MessagesPage from './components/MessagesPage';
 import api from './api/api';
 import './App.css';
@@ -30,7 +30,7 @@ function App() {
       .catch(error => {
         console.error('Error fetching car listings:', error);
       });
-  }, []);  // Keeping the dependency array empty since user state should only initialize once
+  }, []);
 
   return (
     <Router>
@@ -57,6 +57,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
