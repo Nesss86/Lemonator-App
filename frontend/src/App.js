@@ -13,10 +13,12 @@ import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import EditListingForm from './components/ProfilePage/EditListingForm';
 import AboutPage from './components/AboutPage';
+import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';  // Correct modal import
 
 function App() {
   const [user, setUser] = useState(null);
   const [carListings, setCarListings] = useState([]);
+  const [showModal, setShowModal] = useState(false); // State for the chatbot modal visibility
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -54,11 +56,20 @@ function App() {
         <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} />} />
         <Route path="/messages" element={<MessagesPage user={user} />} />
       </Routes>
+
+      {/* Conditionally render LemonDriveAI modal */}
+      <LemonDriveAIModal showModal={showModal} setShowModal={setShowModal} />
     </Router>
   );
 }
 
 export default App;
+
+
+
+
+
+
 
 
 
