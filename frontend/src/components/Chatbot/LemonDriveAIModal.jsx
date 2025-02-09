@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "../../styles/LemonDriveAIModal.scss";  // Ensure correct styles are applied
+import "../../styles/Chatbot.scss";  // Ensure correct styles are applied
 import ChatbotWrapper from '../Chatbot/ChatbotWrapper'; // Import the ChatbotWrapper
 
 function LemonDriveAIModal({ showModal, setShowModal }) {

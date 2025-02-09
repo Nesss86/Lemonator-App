@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+// General styles for the chatbot container
 .chatbot-container {
   border: 2px solid #3f3d9b;
   border-radius: 12px;
@@ -7,46 +10,52 @@
   background-color: #fff;
 }
 
+// Chat display area
 .chat-display {
   height: 300px;
   overflow-y: auto;
   padding: 10px;
-  background-color: #f9f9f9; /* Lighter gray for better contrast */
+  background-color: #f9f9f9; // Lighter gray for better contrast
   border-radius: 8px;
   margin-bottom: 15px;
 }
 
-.user-message {
+// User's message styling
+.chatbot-container .user-message p {
   text-align: right;
   padding: 10px;
-  color: #fff; /* Bright text color for user */
+  color: white !important; // Ensures the text is white
   background-color: #3f3d9b;
   border-radius: 12px;
   margin: 5px 0;
 }
 
+// Bot's message styling
 .bot-message {
   text-align: left;
   padding: 10px;
-  color: #333; /* Darker text for better contrast */
+  color: #333; // Darker text for bot
   background-color: #e0e0e0;
   border-radius: 12px;
   margin: 5px 0;
 }
 
+// Chat form for the input fields
 .chat-form {
   display: flex;
   gap: 10px;
 }
 
+// Input field styling
 .chat-input {
   flex: 1;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  background-color: #f9f9f9; /* Lighter background for the input */
+  background-color: #f9f9f9;
 }
 
+// Submit button styling
 .chat-submit {
   padding: 10px 20px;
   background-color: #3f3d9b;
@@ -57,34 +66,36 @@
 }
 
 .chat-submit:hover {
-  background-color: #6c63ff; /* Lighter hover effect */
+  background-color: #6c63ff; // Lighter hover effect
 }
 
-/* Modal styling updates for better accessibility */
+/* Modal overlay styling for better accessibility */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6); // Dim background for the modal
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
+/* Modal content styling */
 .modal-content {
   background: white;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   width: 85%;
   max-width: 1200px;
   position: relative;
 }
 
-.close-modal {
+/* Close button styling */
+.close-button {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -97,80 +108,43 @@
   transition: color 0.3s ease;
 }
 
-.close-modal:hover {
-  color: #ff0000;
+.close-button:hover {
+  color: #ff0000; // Red color on hover
 }
 
-.listing-item__details {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
+// Chat log (message container) inside the modal
+.chat-log {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding: 10px;
 }
 
-.listing-item__left {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.listing-item__main-image {
+/* Chat input box */
+input[type="text"] {
+  padding: 10px;
   width: 100%;
-  max-width: 800px;
-  height: auto;
   border-radius: 8px;
-  object-fit: contain;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 
-.listing-item__thumbnails {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.thumbnail {
-  width: 100px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 6px;
+// Submit button for the chat
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #3f3d9b;
+  color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
 }
 
-.thumbnail:hover {
-  transform: scale(1.1);
+button[type="submit"]:hover {
+  background-color: #6c63ff;
 }
 
-.listing-item__right {
-  flex: 1;
-  padding-right: 25px;
-}
 
-.listing-item__title {
-  font-size: 30px;
-  font-weight: bold;
-  color: #333;
-}
 
-.listing-item__info {
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.listing-item__info p {
-  font-size: 18px;
-  margin: 8px 0;
-}
 
-.listing-item__description {
-  margin-top: 20px;
-  padding: 15px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
 

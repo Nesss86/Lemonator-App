@@ -13,7 +13,7 @@ import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import EditListingForm from './components/ProfilePage/EditListingForm';
 import AboutPage from './components/AboutPage';
-import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';  // Correct modal import
+import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal'; 
 
 function App() {
   const [user, setUser] = useState(null);
