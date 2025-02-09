@@ -4,11 +4,8 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/profile/:id', to: 'users#show'
 
-
   # Car listings routes with index, detail view, and creation capabilities
   resources :car_listings
-
- 
 
   # Conversations routes
   resources :conversations, only: [:index, :create, :destroy] do
@@ -18,7 +15,11 @@ Rails.application.routes.draw do
   # Messages-related custom routes
   get '/messages/unread/:user_id', to: 'messages#unread', as: 'unread_messages'
   patch '/messages/mark_as_read/:user_id', to: 'messages#mark_as_read', as: 'mark_messages_as_read'
+
+  # OpenAI Chatbot route
+  post '/api/ask', to: 'chatbot#ask'
 end
+
 
 
 
