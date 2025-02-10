@@ -17,7 +17,7 @@ const SearchBar = ({ cars, setFilteredCars }) => {
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
-  
+
   const handleSearch = () => {
     const filteredResults = cars.filter((car) => {
       return (

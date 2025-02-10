@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUnreadMessages, markMessagesAsRead } from "../api/api";
+import LemonDriveAIModal from "./Chatbot/LemonDriveAIModal"; // Correct modal import
 import "../styles/NavBar.scss";
 
 function NavigationBar() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
   const navigate = useNavigate();
 
-  // Use useCallback to memoize fetchUnreadMessages and avoid unnecessary re-creation
+  // Fetch unread messages for the user
   const fetchUnreadMessages = useCallback(async () => {
     try {
       if (user && user.id) {
@@ -60,6 +62,9 @@ function NavigationBar() {
         <li><Link to="/">Browse Cars</Link></li>
         <li><Link to="/about">About</Link></li>
 
+        {/* Add LemonDriveAI link to trigger modal */}
+        <li><Link to="#" onClick={() => setShowModal(true)}>LemonDriveAI</Link></li> {/* Modal Trigger Link */}
+
         {user && (
           <li className="dropdown">
             <Link to="/profile" className="dropdown-toggle">My Account</Link>
@@ -91,11 +96,15 @@ function NavigationBar() {
           </>
         )}
       </div>
+
+      {/* Include the LemonDriveAIModal */}
+      <LemonDriveAIModal showModal={showModal} setShowModal={setShowModal} />
     </nav>
   );
 }
 
 export default NavigationBar;
+
 
 
 
