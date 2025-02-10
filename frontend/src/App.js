@@ -13,6 +13,9 @@ import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import EditListingForm from './components/ProfilePage/EditListingForm';
 import AboutPage from './components/AboutPage';
+import Favourites from './components/Favourites';  // Adjust the path if necessary
+import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';  // Adjust the path if necessary
+
 
 function App() {
   const [user, setUser] = useState(null);
