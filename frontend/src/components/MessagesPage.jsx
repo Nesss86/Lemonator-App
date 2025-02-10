@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import api from "../api/api";
 import "../styles/Messages.scss";
 
-const MessagesPage = ({ user }) => {
+const MessagesPage = () => {
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
   const [conversations, setConversations] = useState([]);
   const [newReplies, setNewReplies] = useState({});
   const [unreadMessages, setUnreadMessages] = useState(0);
@@ -10,6 +11,7 @@ const MessagesPage = ({ user }) => {
 
   // Fetch conversations for the current user
   const fetchConversations = useCallback(async () => {
+    if (!user || !user.id) return;  // Exit if user is not valid
     try {
       const response = await api.get(`/conversations?user_id=${user.id}`);
       if (Array.isArray(response.data)) {
@@ -21,25 +23,50 @@ const MessagesPage = ({ user }) => {
       console.error("Error fetching conversations:", err);
       setError("Failed to load conversations.");
     }
-  }, [user.id]);
+  }, [user]);
 
   // Fetch unread messages
   const fetchUnreadMessages = useCallback(async () => {
+    if (!user || !user.id) return;  // Exit if user is not valid
     try {
       const response = await api.get(`/messages/unread/${user.id}`);
       setUnreadMessages(response.data.length || 0);
     } catch (err) {
       console.error("Error fetching unread messages:", err);
     }
-  }, [user.id]);
+  }, [user]);
 
   useEffect(() => {
-    fetchConversations();
-    fetchUnreadMessages();
+    // Clear state and fetch fresh data when switching users
+    setConversations([]);
+    setUnreadMessages(0);
+    setError(null);
+
+    if (user && user.id) {
+      fetchConversations();
+      fetchUnreadMessages();
+    }
+  }, [user, fetchConversations, fetchUnreadMessages]);
+
+  // Listen for updates when the user changes via the quick login
+  useEffect(() => {
+    const handleUserUpdate = () => {
+      const updatedUser = JSON.parse(localStorage.getItem("user"));
+      setUser(updatedUser);
+      fetchConversations();
+      fetchUnreadMessages();
+    };
+
+    window.addEventListener("userUpdated", handleUserUpdate);
+
+    return () => {
+      window.removeEventListener("userUpdated", handleUserUpdate);
+    };
   }, [fetchConversations, fetchUnreadMessages]);
 
   // Mark messages as read
   const handleMarkAsRead = async () => {
+    if (!user || !user.id) return;  // Guard to prevent errors
     try {
       await api.patch(`/messages/mark_as_read/${user.id}`);
       setUnreadMessages(0);
@@ -61,6 +88,8 @@ const MessagesPage = ({ user }) => {
       alert("Reply cannot be empty.");
       return;
     }
+
+    if (!user || !user.id) return;  // Guard to prevent issues
 
     try {
       await api.post(`/conversations/${conversationId}/messages`, {
@@ -92,6 +121,10 @@ const MessagesPage = ({ user }) => {
   // Display any errors encountered
   if (error) {
     return <p className="error-message">{error}</p>;
+  }
+
+  if (!user || !user.id) {
+    return <p>Please log in to view your messages.</p>;
   }
 
   return (
@@ -175,6 +208,10 @@ const MessagesPage = ({ user }) => {
 };
 
 export default MessagesPage;
+
+
+
+
 
 
 

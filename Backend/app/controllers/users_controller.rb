@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-
   # POST /signup
   def create
     if User.exists?(email: params[:email])
@@ -18,11 +17,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /profile/:id (updated to match the new route)
-  # UsersController
-
   # GET /profile/:id - Fetch user profile details
-
   def show
     user = User.find_by(id: params[:id])
 
@@ -46,10 +41,20 @@ class UsersController < ApplicationController
         end
       }, status: :ok
     else
-      render json: { error: "User not found" }, status: :not_found
+      render json: { error: "User not found for ID #{params[:id]}" }, status: :not_found
     end
   end
 
+  # GET /quick_login/:id - Quick login endpoint to fetch user details
+  def quick_login
+    user = User.find_by(id: params[:id])
+
+    if user
+      render json: user_data(user), status: :ok
+    else
+      render json: { error: "User not found for quick login ID #{params[:id]}" }, status: :not_found
+    end
+  end
 
   private
 
@@ -66,10 +71,18 @@ class UsersController < ApplicationController
     }
   end
 
+  # Provide a default profile picture if none is set
   def profile_picture_url(picture_name)
+    return "/images/default_profile.png" if picture_name.blank?
     "/images/profile_pictures/#{picture_name}"
   end
+
+  def user_params
+    params.permit(:first_name, :last_name, :email, :password, :phone_number, :location, :profile_picture)
+  end
 end
+
+
 
 
 

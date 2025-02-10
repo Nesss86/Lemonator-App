@@ -1,17 +1,22 @@
 .car-list__fav-icon {
   position: relative;
-    top: 8px;
-    left: 10px;
-    cursor: pointer;
-    margin-bottom: -40px;
-    border-width: 0.1px;
-    background-color: #FFFFFF;
-    width: 34px;
-    height: 34px;
-    text-align: center;
-    border-radius: 100%;
+  top: 8px;
+  left: 10px;
+  cursor: pointer;
+  margin-bottom: -40px;
+  border: 1px solid #ccc;  // Adjust this if you want a more visible border
+  background-color: #FFFFFF;
+  width: 34px;
+  height: 34px;
+  text-align: center;
+  border-radius: 50%;
+  display: flex;  // Flexbox to help with centering
+  align-items: center;  // Center vertically
+  justify-content: center;  // Center horizontally
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);  // Optional for a slight shadow
 }
 
 .car-list__fav-icon-svg {
-padding: 7px;
+  width: 20px;  // Adjust as needed to fit the circle
+  height: 20px;
 }

@@ -13,9 +13,8 @@ import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import EditListingForm from './components/ProfilePage/EditListingForm';
 import AboutPage from './components/AboutPage';
-import Favourites from './components/Favourites';  // Adjust the path if necessary
-import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';  // Adjust the path if necessary
-
+import Favourites from './components/Favourites';
+import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';
 
 // Custom hook to handle route changes
 function useRouteChangeHandler(fetchAllListings) {
@@ -28,7 +27,7 @@ function useRouteChangeHandler(fetchAllListings) {
 }
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const [carListings, setCarListings] = useState([]);
   const [showModal, setShowModal] = useState(false); // State for the chatbot
   //  modal visibility
@@ -60,19 +59,13 @@ function App() {
   
   return (
    <>
-      <NavigationBar user={user} />
+      <NavigationBar user={user} setUser={setUser} />
       <Routes>
         <Route path="/" element={<LandingPage cars={carListings}  setCarListings={setCarListings} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/my-listings" element={<ProfilePage user={user} listings={carListings} setCarListings={setCarListings} />} />
-        <Route path="/login" element={<LoginForm onLoginSuccess={(user) => {
-          setUser(user);
-          window.location.href = '/profile'; 
-        }} />} />
-        <Route path="/signup" element={<SignupForm onSignupSuccess={(user) => {
-          setUser(user);
-          window.location.href = '/profile'; 
-        }} />} />
+        <Route path="/login" element={<LoginForm onLoginSuccess={setUser} />}  />
+        <Route path="/signup" element={<SignupForm onSignupSuccess={setUser} />} />
         <Route path="/profile" element={<ProfilePage user={user}  />} />
         <Route path="/create-listing" element={<NewListing setCars={setCarListings} user={user} />} />
         <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />
@@ -88,6 +81,9 @@ function App() {
 }
 
 export default App;
+
+
+
 
 
 
