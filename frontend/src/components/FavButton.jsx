@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FavIcon from "./FavIcon";
+import '../styles/FavButton.scss';
 
 const FavButton = ({ car }) => {
   const [isFavorited, setIsFavorited] = useState(false);
@@ -31,9 +32,11 @@ const FavButton = ({ car }) => {
   };
 
   return (
-    <button className="fav-button" onClick={toggleFavorite}>
+    <div className="car-list__fav-icon" onClick={toggleFavorite}>
+      <div className="car-list__fav-icon-svg">
       <FavIcon selected={isFavorited} />
-    </button>
+      </div>
+    </div>
   );
 };
 
