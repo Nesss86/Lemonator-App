@@ -13,6 +13,7 @@ import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import EditListingForm from './components/ProfilePage/EditListingForm';
 import AboutPage from './components/AboutPage';
+import Favourites from './components/Favourites';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -53,6 +54,7 @@ function App() {
         <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />
         <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} />} />
         <Route path="/messages" element={<MessagesPage user={user} />} />
+        <Route path="/favourites" element={<Favourites />} />
       </Routes>
     </Router>
   );
