@@ -3,7 +3,7 @@ import api from "../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/NewListing.scss";
 
-const EditListingForm = ({ cars }) => {
+const EditListingForm = ({ cars, user }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -11,7 +11,7 @@ const EditListingForm = ({ cars }) => {
 
   const [formData, setFormData] = useState({
     id: "",
-    user_id: "",
+    user_id: user?.id || "",    category: "",
     category: "",
     make: "",
     model: "",
@@ -26,22 +26,23 @@ const EditListingForm = ({ cars }) => {
 
   useEffect(() => {
     if (existingListing) {
-      setFormData({
+      setFormData((prev) => ({
+        ...prev,
         id: existingListing.id,
-        user_id: existingListing.user_id,
+        user_id: user?.id || existingListing.user_id,
         category: existingListing.category,
         make: existingListing.make,
         model: existingListing.model,
         year: existingListing.year,
-        price_cents: existingListing.price_cents / 100, // Convert cents to dollars
+        price_cents: existingListing.price_cents / 100,
         color: existingListing.color,
         mileage: existingListing.mileage,
         city: existingListing.city,
         description: existingListing.description,
-        images: existingListing.images || [], // Load existing image URLs
-      });
+        images: existingListing.images || [],
+      }));
     }
-  }, [existingListing]);
+  }, [existingListing, user]); // Include `user` as a dependency
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -118,11 +119,6 @@ const EditListingForm = ({ cars }) => {
           <option value="Electric">Electric</option>
           <option value="Hatchback">Hatchback</option>
         </select>
-      </label>
-
-      <label className="create-listing__label">
-        User ID:
-        <input type="text" name="user_id" value={formData.user_id} onChange={handleChange} className="create-listing__input" />
       </label>
 
       <label className="create-listing__label">

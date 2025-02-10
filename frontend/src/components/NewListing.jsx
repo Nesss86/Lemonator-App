@@ -3,12 +3,11 @@ import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import "../styles/NewListing.scss";
 
-const NewListing = ({ setCars }) => {
+const NewListing = ({ setCars, user }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    user_id: "",
-    category: "",
+    user_id: user?.id || "",    category: "",
     make: "",
     model: "",
     year: "",
@@ -93,17 +92,6 @@ const NewListing = ({ setCars }) => {
           <option value="Electric">Electric</option>
           <option value="Hatchback">Hatchback</option>
         </select>
-      </label>
-
-      <label className="create-listing__label">
-        User ID:
-        <input
-          type="text"
-          name="user_id"
-          value={formData.user_id}
-          onChange={handleChange}
-          className="create-listing__input"
-        />
       </label>
 
       <label className="create-listing__label">

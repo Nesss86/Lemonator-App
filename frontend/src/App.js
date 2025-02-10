@@ -53,9 +53,9 @@ function App() {
           window.location.href = '/profile'; 
         }} />} />
         <Route path="/profile" element={<ProfilePage user={user} />} />
-        <Route path="/create-listing" element={<NewListing setCars={setCarListings} />} />
+        <Route path="/create-listing" element={<NewListing setCars={setCarListings} user={user} />} />
         <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />
-        <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} />} />
+        <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} user={user} />} />
         <Route path="/messages" element={<MessagesPage user={user} />} />
         <Route path="/favourites" element={<Favourites />} />
       </Routes>
