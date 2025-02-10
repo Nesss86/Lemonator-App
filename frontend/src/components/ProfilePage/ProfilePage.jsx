@@ -22,7 +22,7 @@ function ProfilePage({ listings, setCarListings}) {
       const response = await api.get(`/profile/${storedUser.id}`);
       console.log('Profile Response:', response.data);
       setUser(response.data.user);
-      setListings(response.data.listings);
+      setCarListings(response.data.listings);
     } catch (error) {
       console.error('Error fetching profile:', error);
       setError('Failed to load profile. Please try again later.');
