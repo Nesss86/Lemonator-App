@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
-
 .search-container {
   font-family: 'Poppins', sans-serif;
   display: flex;
@@ -18,28 +17,42 @@
 
 .search-fields {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  flex-wrap: nowrap; /* Keep everything on one row */
+  justify-content: flex-start; /* Align the inputs to the left */
+  gap: 10px; /* Space between the inputs */
   width: 100%;
+  max-width: 1200px;
 }
 
-.search-input, .range-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-}
-
-.search-input, .range-container input {
+.search-input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 0.85rem;
-  width: 110px;
   height: 40px;
   box-sizing: border-box;
+  width: 120px; /* Default width for all text input fields */
+}
+
+.search-input:first-of-type,
+.search-input:nth-of-type(2),
+.search-input:nth-of-type(3) {
+  width: 115px; /* Increase width for first three input fields */
+}
+
+.range-container input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  height: 40px;
+  box-sizing: border-box;
+  width: 110px; /* Keep width for range inputs */
+}
+
+.range-container {
+  display: flex;
+  gap: 5px;
 }
 
 .search-button {
@@ -53,6 +66,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   height: 40px;
+  align-self: center;
 }
 
 .search-button:hover {
@@ -60,3 +74,25 @@
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
 }
+
+@media (max-width: 768px) {
+  .search-fields {
+    flex-direction: column; /* Stack fields on small screens */
+    align-items: flex-start;
+  }
+
+  .search-input, .range-container input {
+    width: 100%; /* Make all fields full-width on small screens */
+    margin-bottom: 10px; /* Space between fields */
+  }
+
+  .search-button {
+    width: 100%; /* Full-width button on small screens */
+    margin-top: -10px; /* Move the button up a little */
+  }
+}
+
+
+
+
+

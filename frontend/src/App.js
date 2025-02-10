@@ -13,11 +13,11 @@ import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import EditListingForm from './components/ProfilePage/EditListingForm';
 import AboutPage from './components/AboutPage';
-import Favourites from './components/Favourites';
 
 function App() {
   const [user, setUser] = useState(null);
   const [carListings, setCarListings] = useState([]);
+  const [showModal, setShowModal] = useState(false); // State for the chatbot modal visibility
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -56,11 +56,20 @@ function App() {
         <Route path="/messages" element={<MessagesPage user={user} />} />
         <Route path="/favourites" element={<Favourites />} />
       </Routes>
+
+      {/* Conditionally render LemonDriveAI modal */}
+      <LemonDriveAIModal showModal={showModal} setShowModal={setShowModal} />
     </Router>
   );
 }
 
 export default App;
+
+
+
+
+
+
 
 
 
