@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ListingListItem from "../components/ListingListItem";
+import "../styles/Favorites.scss";
 
 const Favourites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -20,12 +21,12 @@ const Favourites = () => {
   }, []);
 
   return (
-    <div>
-      <h2>My Favourites</h2>
+    <div className="favorites-container">
+      <h2 className="favorites-title">My Favourites</h2>
       {favorites.length === 0 ? (
         <p>No favorite listings yet.</p>
       ) : (
-        <ul>
+        <ul className="favorites-list">
           {favorites.map((car) => (
             <ListingListItem key={car.id} car={car} />
           ))}
