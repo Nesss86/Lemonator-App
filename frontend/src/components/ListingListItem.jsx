@@ -2,11 +2,30 @@ import React, { useState } from "react";
 import "../styles/ListingListItem.scss";
 import { ensureConversation, sendMessage } from "../api/api";
 import ListingItemDetails from "./ListingItemDetails"; // Import the modal correctly
+import { Link } from "react-router-dom";
+import FavButton from "./FavButton";
 
 const ListingListItem = ({ car }) => {
   const [messageFormOpen, setMessageFormOpen] = useState(false);
   const [messageContent, setMessageContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  const handleToggleFavorite = () => {
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    let updatedFavorites;
+
+    if(isFavorited) {
+      // Remove from favorites
+      updatedFavorites = storedFavorites.filter((fav) => fav.id !== car.id);
+    } else {
+      // Add to favorites
+      updatedFavorites = [...storedFavorites, car];
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    setIsFavorited(!isFavorited);
+  };
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -50,6 +69,9 @@ const ListingListItem = ({ car }) => {
   return (
     <>
       <li className="listing-list__item">
+        <FavButton 
+           car={car} 
+        />
         <img
           className="listing-list__image"
           src={car.images.length > 0 ? car.images[0] : "https://via.placeholder.com/300"}
