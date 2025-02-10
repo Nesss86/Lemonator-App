@@ -1,12 +1,27 @@
 import React from 'react';
 import "../../styles/CarListings.scss";
 import { Link } from "react-router-dom";
+import api from "../../api/api"; // Import the API helper
 
 
-function CarListings({ listings }) {
+function CarListings({ listings, setListings }) {
   if (!listings || listings.length === 0) {
     return <p>No car listings available.</p>;
   }
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this listing?");
+    if(!confirmDelete) return;
+
+    try {
+      await api.delete(`/car_listings/${id}`); // Use API helper
+      setListings((prevListings) => prevListings.filter((car) => car.id !== id));
+      alert("Listing deleted successfully!");
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert(error.response?.data?.error || "Failed to delete listing");
+    }
+  };
 
   return (
     <div className="car-listings">
@@ -25,6 +40,7 @@ function CarListings({ listings }) {
                 <div className="car-price">Price: ${(car.price_cents / 100).toLocaleString()}</div>
               </div>
               <Link to={`/edit-listing/${car.id}`} className="car-button">Edit Listing</Link>
+              <button className="car-button" onClick={() => handleDelete(car.id)}>Delete Listing</button>
             </div>
           </li>
         ))}

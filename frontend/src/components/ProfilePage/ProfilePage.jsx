@@ -44,7 +44,7 @@ function ProfilePage() {
 
       <h2>Your Listings</h2>
       {listings.length > 0 ? (
-        <CarListings listings={listings} />
+        <CarListings listings={listings} setListings={setListings} />
       ) : (
         <p>You have no active listings. Create one <a href="/create-listing">here</a>.</p>
       )}
