@@ -1,4 +1,5 @@
 .listing-list__item {
+  position: relative;  // Enable relative positioning for child elements like the FavButton
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -12,10 +13,36 @@
   text-align: center;
 }
 
+.image-container {
+  position: relative;  // For positioning the favorite icon inside the image
+  width: 100%;
+}
+
 .listing-list__image {
   width: 100%;
-  object-fit: cover;
+  height: 250px;  // Ensure all images are the same size
+  object-fit: cover;  // Maintain aspect ratio while cropping excess
   border-radius: 8px;
+}
+
+.car-list__fav-icon {
+  position: absolute;
+  top: 12px;  // Position at the top-right corner
+  right: 12px;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.car-list__fav-icon:hover {
+  transform: scale(1.1);  // Slight grow effect on hover
 }
 
 .listing-list__car-details {
@@ -32,10 +59,10 @@
 }
 
 .listing-list__price {
-  font-size: 1.1rem;  // Make the price text bigger
-  font-weight: bold;  // Make it bold
-  color: #333;  // Darker text for better visibility
-  margin-top: 8px;  // Add spacing for better alignment
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 8px;
 }
 
 .listing-list__buttons {
@@ -95,4 +122,5 @@
     }
   }
 }
+
 

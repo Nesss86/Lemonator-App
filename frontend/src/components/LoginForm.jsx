@@ -24,6 +24,7 @@ function LoginForm({ onLoginSuccess }) {
       // Redirect to profile page
       navigate('/profile');
     } catch (error) {
+      console.error('Login failed:', error);
       setError('Invalid email or password');
     }
   };
@@ -52,6 +53,7 @@ function LoginForm({ onLoginSuccess }) {
 }
 
 export default LoginForm;
+
 
 
 
