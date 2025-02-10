@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUnreadMessages, markMessagesAsRead } from "../api/api";
 import LemonDriveAIModal from "./Chatbot/LemonDriveAIModal"; // Correct modal import
 import "../styles/NavBar.scss";
+import axios from "axios"; // For API requests
 
 function NavigationBar() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
@@ -43,6 +44,36 @@ function NavigationBar() {
     setUser(null);
     window.location.href = "/";
   };
+
+  // Fetch user details for quick login
+  const quickLogin = async (userId) => {
+    try {
+      const response = await axios.get(`/quick_login/${userId}`);
+      if (response.status === 200) {
+        const loggedInUser = response.data;
+        setUser(loggedInUser);
+        localStorage.setItem("user", JSON.stringify(loggedInUser));
+        navigate("/profile");
+        // Trigger an artificial page-wide update by emitting a custom event
+        window.dispatchEvent(new Event("userUpdated"));
+      }
+    } catch (error) {
+      console.error("Quick login failed:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Listen for quick login updates across the app
+    const handleUserUpdate = () => {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    };
+
+    window.addEventListener("userUpdated", handleUserUpdate);
+
+    return () => {
+      window.removeEventListener("userUpdated", handleUserUpdate);
+    };
+  }, []);
 
   return (
     <nav className="navigation-bar">
@@ -95,6 +126,10 @@ function NavigationBar() {
             <Link to="/signup" className="btn">Sign Up</Link>
           </>
         )}
+
+        {/* Quick Login Buttons */}
+        <button className="btn quick-login-btn" onClick={() => quickLogin(1)}>Quick Login User 1</button>
+        <button className="btn quick-login-btn" onClick={() => quickLogin(2)}>Quick Login User 2</button>
       </div>
 
       {/* Include the LemonDriveAIModal */}
@@ -104,6 +139,9 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+
+
+
 
 
 

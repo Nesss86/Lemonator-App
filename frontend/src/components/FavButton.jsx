@@ -1,43 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import FavIcon from "./FavIcon";
-import '../styles/FavButton.scss';
+import "../styles/FavButton.scss";
 
 const FavButton = ({ car }) => {
-  const [isFavorited, setIsFavorited] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));  // Get the logged-in user
+  const storageKey = `favorites_${user?.id}`;  // Store favorites based on user ID
 
-  // Load initial state from localStorage
-  useEffect(() => {
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setIsFavorited(savedFavorites.some((fav) => fav.id === car.id));
-  }, [car.id]);
+  const [isFavorited, setIsFavorited] = useState(() => {
+    const savedFavorites = JSON.parse(localStorage.getItem(storageKey)) || [];
+    return savedFavorites.some((fav) => fav.id === car.id);
+  });
 
   // Toggle favorite state
   const toggleFavorite = () => {
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    
+    const savedFavorites = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    let updatedFavorites;
     if (isFavorited) {
       // Remove from favorites
-      const updatedFavorites = savedFavorites.filter((fav) => fav.id !== car.id);
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-      setIsFavorited(false);
+      updatedFavorites = savedFavorites.filter((fav) => fav.id !== car.id);
     } else {
-      // Add to favorites (ensure no duplicates)
-      const updatedFavorites = [...savedFavorites, car];
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-      setIsFavorited(true);
+      // Add to favorites (avoid duplicates)
+      updatedFavorites = [...savedFavorites, car];
     }
 
-    // Trigger an event for other components to sync state
+    // Update localStorage and state
+    localStorage.setItem(storageKey, JSON.stringify(updatedFavorites));
+    setIsFavorited(!isFavorited);
+
+    // Dispatch event to notify other components
     window.dispatchEvent(new Event("favoritesUpdated"));
   };
 
   return (
     <div className="car-list__fav-icon" onClick={toggleFavorite}>
-      <div className="car-list__fav-icon-svg">
       <FavIcon selected={isFavorited} />
-      </div>
     </div>
   );
 };
 
 export default FavButton;
+
+
+

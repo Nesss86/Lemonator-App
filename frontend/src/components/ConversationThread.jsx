@@ -7,10 +7,10 @@ function ConversationThread({ conversation, user }) {
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Fetch messages whenever the conversation ID changes
+  // Fetch messages whenever the conversation ID or user changes
   useEffect(() => {
     async function fetchMessages() {
-      if (!conversation || !conversation.id) return;  // No need to fetch if no conversation
+      if (!conversation || !conversation.id || !user || !user.id) return;
 
       try {
         const response = await fetch(`/conversations/${conversation.id}/messages`);
@@ -20,7 +20,7 @@ function ConversationThread({ conversation, user }) {
       }
     }
     fetchMessages();
-  }, [conversation?.id]);  // Updated to safely handle cases when conversation may be null
+  }, [conversation?.id, user?.id]);  // Added user.id to dependency array
 
   // Scroll to the bottom when new messages arrive
   useEffect(() => {
@@ -93,6 +93,7 @@ function ConversationThread({ conversation, user }) {
 }
 
 export default ConversationThread;
+
 
 
 

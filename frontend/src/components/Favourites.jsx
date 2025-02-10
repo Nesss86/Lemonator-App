@@ -3,22 +3,25 @@ import ListingListItem from "../components/ListingListItem";
 import "../styles/Favorites.scss";
 
 const Favourites = () => {
-  const [favorites, setFavorites] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));  // Get the user once on mount
 
-  // Load favorites from localStorage on mount
-  useEffect(() => {
-    setFavorites(JSON.parse(localStorage.getItem("favorites")) || []);
-  }, []);
+  // Lazy initialization: load favorites directly during initial state setup
+  const [favorites, setFavorites] = useState(() => {
+    if (!user || !user.id) return [];
+    return JSON.parse(localStorage.getItem(`favorites_${user.id}`)) || [];
+  });
 
-  // Listen for updates from the `FavButton`
+  // Listen for updates from the `FavButton` via the `favoritesUpdated` event
   useEffect(() => {
     const updateFavorites = () => {
-      setFavorites(JSON.parse(localStorage.getItem("favorites")) || []);
+      if (!user || !user.id) return;
+      const updatedFavorites = JSON.parse(localStorage.getItem(`favorites_${user.id}`)) || [];
+      setFavorites(updatedFavorites);
     };
-    
+
     window.addEventListener("favoritesUpdated", updateFavorites);
     return () => window.removeEventListener("favoritesUpdated", updateFavorites);
-  }, []);
+  }, [user]);  // Correctly listening to the `user` without causing loops
 
   return (
     <div className="favorites-container">
@@ -37,3 +40,8 @@ const Favourites = () => {
 };
 
 export default Favourites;
+
+
+
+
+

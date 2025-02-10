@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post '/signup', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/profile/:id', to: 'users#show'
+  get '/quick_login/:id', to: 'users#quick_login'  # New route
 
   # Car listings routes with index, detail view, and creation capabilities
   resources :car_listings
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
   # OpenAI Chatbot route
   post '/api/ask', to: 'chatbot#ask'
 end
+
 
 
 

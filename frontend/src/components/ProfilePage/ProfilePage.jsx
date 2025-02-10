@@ -2,36 +2,53 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api/api';
 import UserInfo from './UserInfo';
 import CarListings from './CarListings';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/ProfilePage.scss';
 
 function ProfilePage() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);  // Track any errors during fetch
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();  // To navigate dynamically when quick login occurs
 
+  // Function to fetch the user's profile
+  const fetchProfile = async (storedUser) => {
+    try {
+      if (!storedUser) {
+        setError('No user found in local storage. Please log in.');
+        return;
+      }
+
+      const response = await api.get(`/profile/${storedUser.id}`);
+      console.log('Profile Response:', response.data);
+      setUser(response.data.user);
+      setListings(response.data.listings);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      setError('Failed to load profile. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Detect changes in logged-in user and re-fetch the profile
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        if (!storedUser) {
-          setError('No user found in local storage. Please log in.');
-          return;
-        }
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    fetchProfile(storedUser);
 
-        const response = await api.get(`/profile/${storedUser.id}`);
-        console.log('Profile Response:', response.data);
-        setUser(response.data.user);
-        setListings(response.data.listings);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-        setError('Failed to load profile. Please try again later.');
-      } finally {
-        setLoading(false);
+    // Listen for quick login events using storage events
+    const handleStorageChange = () => {
+      const updatedUser = JSON.parse(localStorage.getItem('user'));
+      if (updatedUser && updatedUser.id !== user?.id) {
+        fetchProfile(updatedUser);
+        navigate('/profile');  // Ensure proper navigation if needed
       }
     };
-    fetchProfile();
-  }, []);
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [user, navigate]);
 
   if (loading) return <div>Loading profile...</div>;
   if (error) return <div className="error-message">{error}</div>;
@@ -53,6 +70,8 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
+
+
 
 
 
