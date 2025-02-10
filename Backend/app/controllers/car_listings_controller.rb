@@ -46,6 +46,19 @@ class CarListingsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /car_listings/:id
+  def update
+    car_listing = CarListing.find_by(id: params[:id])
+    if car_listing.nil?
+      return render json: { error: "Car listing not found" }, status: :not_found
+    end
+    if car_listing.update(car_listing_params)
+      render json: car_listing, include: :images, status: :ok
+    else
+      render json: { error: car_listing.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def car_listing_params
