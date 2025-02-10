@@ -20,7 +20,8 @@ import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';  // Adju
 function App() {
   const [user, setUser] = useState(null);
   const [carListings, setCarListings] = useState([]);
-  const [showModal, setShowModal] = useState(false); // State for the chatbot modal visibility
+  const [showModal, setShowModal] = useState(false); // State for the chatbot
+  //  modal visibility
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -41,9 +42,9 @@ function App() {
     <Router>
       <NavigationBar user={user} />
       <Routes>
-        <Route path="/" element={<LandingPage cars={carListings} />} />
+        <Route path="/" element={<LandingPage cars={carListings}  setCarListings={setCarListings} />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/my-listings" element={<ProfilePage user={user} />} />
+        <Route path="/my-listings" element={<ProfilePage user={user} listings={carListings} setCarListings={setCarListings} />} />
         <Route path="/login" element={<LoginForm onLoginSuccess={(user) => {
           setUser(user);
           window.location.href = '/profile'; 
@@ -52,7 +53,7 @@ function App() {
           setUser(user);
           window.location.href = '/profile'; 
         }} />} />
-        <Route path="/profile" element={<ProfilePage user={user} />} />
+        <Route path="/profile" element={<ProfilePage user={user}  />} />
         <Route path="/create-listing" element={<NewListing setCars={setCarListings} user={user} />} />
         <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />
         <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} user={user} />} />

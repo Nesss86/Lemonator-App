@@ -4,9 +4,9 @@ import UserInfo from './UserInfo';
 import CarListings from './CarListings';
 import '../../styles/ProfilePage.scss';
 
-function ProfilePage() {
+function ProfilePage({ listings, setCarListings}) {
   const [user, setUser] = useState(null);
-  const [listings, setListings] = useState([]);
+ // const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  // Track any errors during fetch
 
@@ -22,7 +22,7 @@ function ProfilePage() {
         const response = await api.get(`/profile/${storedUser.id}`);
         console.log('Profile Response:', response.data);
         setUser(response.data.user);
-        setListings(response.data.listings);
+        setCarListings(response.data.listings);
       } catch (error) {
         console.error('Error fetching profile:', error);
         setError('Failed to load profile. Please try again later.');
@@ -44,7 +44,7 @@ function ProfilePage() {
 
       <h2>Your Listings</h2>
       {listings.length > 0 ? (
-        <CarListings listings={listings} setListings={setListings} />
+        <CarListings listings={listings} setListings={setCarListings} />
       ) : (
         <p>You have no active listings. Create one <a href="/create-listing">here</a>.</p>
       )}
