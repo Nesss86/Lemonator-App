@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
@@ -17,29 +17,49 @@ import Favourites from './components/Favourites';  // Adjust the path if necessa
 import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';  // Adjust the path if necessary
 
 
+// Custom hook to handle route changes
+function useRouteChangeHandler(fetchAllListings) {
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === '/') {
+      fetchAllListings();
+    }
+  }, [location.pathname]);
+}
+
 function App() {
   const [user, setUser] = useState(null);
   const [carListings, setCarListings] = useState([]);
   const [showModal, setShowModal] = useState(false); // State for the chatbot
   //  modal visibility
 
+  // Function to fetch all car listings
+  const fetchAllListings = () => {
+    api.get('/car_listings')
+       .then(response => {
+        setCarListings(response.data);
+       })
+       .catch(error => {
+        console.error('Error fetching car listings:', error);
+       });
+  };
+  
+  // Load user and fetch listings when app mounts
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
     if (loggedInUser) {
       setUser(loggedInUser);
     }
 
-    api.get('/car_listings')
-      .then(response => {
-        setCarListings(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching car listings:', error);
-      });
+    fetchAllListings(); // Fetch all listings on initial load
   }, []);
 
+  // Use the custom hook
+  useRouteChangeHandler(fetchAllListings);
+
+  
   return (
-    <Router>
+   <>
       <NavigationBar user={user} />
       <Routes>
         <Route path="/" element={<LandingPage cars={carListings}  setCarListings={setCarListings} />} />
@@ -63,7 +83,7 @@ function App() {
 
       {/* Conditionally render LemonDriveAI modal */}
       <LemonDriveAIModal showModal={showModal} setShowModal={setShowModal} />
-    </Router>
+    </>
   );
 }
 

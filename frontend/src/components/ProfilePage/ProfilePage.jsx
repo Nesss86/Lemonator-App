@@ -6,7 +6,6 @@ import '../../styles/ProfilePage.scss';
 
 function ProfilePage({ listings, setCarListings}) {
   const [user, setUser] = useState(null);
- // const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  // Track any errors during fetch
 
