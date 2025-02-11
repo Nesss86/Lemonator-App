@@ -11,7 +11,7 @@ function CarListings({ listings, setListings }) {
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this listing?");
-    if(!confirmDelete) return;
+    if (!confirmDelete) return;
 
     try {
       await api.delete(`/car_listings/${id}`); // Use API helper
@@ -21,6 +21,14 @@ function CarListings({ listings, setListings }) {
       console.error("Delete error:", error);
       alert(error.response?.data?.error || "Failed to delete listing");
     }
+  };
+
+  const formatPrice = (cents) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "CAD",
+      minimumFractionDigits: 2,
+    }).format(cents / 100);
   };
 
   return (
@@ -36,16 +44,20 @@ function CarListings({ listings, setListings }) {
               />
               <div className="car-details">
                 <h3>{car.year} {car.make} {car.model}</h3>
-                <p>{car.city} - {car.mileage} km</p>
-                <div className="car-price">Price: ${(car.price_cents / 100).toLocaleString()}</div>
+                <p className="car-details__mileage">
+                  <span>Mileage: {car.mileage} km</span>
+                  <span>Location: {car.city}</span>
+                </p>
+                <hr />
+                <p className="car-details__price">Price: {formatPrice(car.price_cents)}</p>
               </div>
               <div className='button-container'>
-              <button className="car-button">
-                <Link to={`/edit-listing/${car.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                  Edit Listing
-                </Link>
-            </button>
-              <button className="car-button" onClick={() => handleDelete(car.id)}>Delete Listing</button>
+                <button className="car-button">
+                  <Link to={`/edit-listing/${car.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    Edit Listing
+                  </Link>
+                </button>
+                <button className="car-button" onClick={() => handleDelete(car.id)}>Delete Listing</button>
               </div>
             </div>
           </li>
