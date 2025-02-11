@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
+import '../styles/LoginForm.scss'; // Import the SCSS file
 
 function LoginForm({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -28,9 +29,9 @@ function LoginForm({ onLoginSuccess }) {
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} className="login-form">
       <h2>Login</h2>
-      {error && <p>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <input
         type="email"
         placeholder="Email"
@@ -46,6 +47,9 @@ function LoginForm({ onLoginSuccess }) {
         required
       />
       <button type="submit">Log In</button>
+      <div className="form-footer">
+        <a href="/forgot-password">Forgot Password?</a> | <a href="/signup">Sign Up</a>
+      </div>
     </form>
   );
 }

@@ -1,0 +1,96 @@
+// Define color variables for a modern look
+$primary-color: #6c63ff; // Purple
+$secondary-color: #3f3d9b; // Darker purple
+$background-color: #f4f6f8; // Light gray background
+$input-border: #d1d5db; // Light gray border
+$text-color: #333; // Dark text
+$error-color: #ff4d4d; // Red for errors
+$button-hover: #5351d4; // Darker purple for button hover
+$box-shadow: rgba(0, 0, 0, 0.1); // Subtle shadow
+
+// Form container styling
+.login-form {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px $box-shadow;
+  text-align: center;
+
+  h2 {
+    font-size: 1.8rem;
+    color: $primary-color;
+    margin-bottom: 20px;
+  }
+
+  // Error message styling
+  .error-message {
+    color: $error-color;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+
+  // Input field styling
+  input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid $input-border;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: $text-color;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease-in-out;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 8px rgba($primary-color, 0.3);
+    }
+
+    &::placeholder {
+      color: lighten($text-color, 30%);
+    }
+  }
+
+  // Button styling
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, $button-hover, darken($secondary-color, 10%));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // Optional: Add a link for "Forgot Password" or "Sign Up"
+  .form-footer {
+    margin-top: 15px;
+    font-size: 0.9rem;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $button-hover;
+      }
+    }
+  }
+}

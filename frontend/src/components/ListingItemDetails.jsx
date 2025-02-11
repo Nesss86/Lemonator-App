@@ -49,12 +49,12 @@ const ListingItemDetails = ({ car, onClose }) => {
         </div>
 
         <div className="listing-item__right">
-          <h1 className="listing-item__title">{car.year} {car.make} {car.model}</h1>
+          <h1 className="listing-item__title">{car.make} {car.model}</h1>
           <div className="listing-item__info">
             <p><strong>Year:</strong> {car.year}</p>
             <p><strong>Price:</strong> {formatPrice(car.price_cents)}</p>
             <p><strong>Mileage:</strong> {car.mileage} km</p>
-            <p><strong>Colour:</strong> {car.color}</p>
+            <p><strong>Color:</strong> {car.color}</p>
             <p><strong>Location:</strong> {car.city}</p>
           </div>
           <div className="listing-item__description">

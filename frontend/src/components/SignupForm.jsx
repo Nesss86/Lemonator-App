@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
+import '../styles/LoginForm.scss';
 
 function SignupForm({ onSignupSuccess }) {
   const [firstName, setFirstName] = useState('');
@@ -37,9 +38,9 @@ function SignupForm({ onSignupSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSignup}>
+    <form onSubmit={handleSignup} className="login-form">
       <h2>Sign Up</h2>
-      {error && <p>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <input
         type="text"
         placeholder="First Name"
@@ -69,10 +70,11 @@ function SignupForm({ onSignupSuccess }) {
         required
       />
       <button type="submit">Sign Up</button>
+      <div className="form-footer">
+        <a href="/login">Already have an account? Log In</a>
+      </div>
     </form>
   );
 }
 
 export default SignupForm;
-
-
