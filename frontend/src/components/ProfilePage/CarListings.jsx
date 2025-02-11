@@ -39,8 +39,14 @@ function CarListings({ listings, setListings }) {
                 <p>{car.city} - {car.mileage} km</p>
                 <div className="car-price">Price: ${(car.price_cents / 100).toLocaleString()}</div>
               </div>
-              <Link to={`/edit-listing/${car.id}`} className="car-button">Edit Listing</Link>
+              <div className='button-container'>
+              <button className="car-button">
+                <Link to={`/edit-listing/${car.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  Edit Listing
+                </Link>
+            </button>
               <button className="car-button" onClick={() => handleDelete(car.id)}>Delete Listing</button>
+              </div>
             </div>
           </li>
         ))}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
@@ -63,10 +63,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage cars={carListings}  setCarListings={setCarListings} />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/my-listings" element={<ProfilePage user={user} listings={carListings} setCarListings={setCarListings} />} />
+        <Route path="/my-listings" element={<ProfilePage user={user} setUser={setUser} listings={carListings} setCarListings={setCarListings} />} key={user ? user.id : 'default'} />
         <Route path="/login" element={<LoginForm onLoginSuccess={setUser} />}  />
         <Route path="/signup" element={<SignupForm onSignupSuccess={setUser} />} />
-        <Route path="/profile" element={<ProfilePage user={user}  />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/create-listing" element={<NewListing setCars={setCarListings} user={user} />} />
         <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />
         <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} user={user} />} />
