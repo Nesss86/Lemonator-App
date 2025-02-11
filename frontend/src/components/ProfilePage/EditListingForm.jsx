@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
-import "../../styles/NewListing.scss";
+import "../../styles/EditListingForm.scss";
 
 const EditListingForm = ({ cars, user }) => {
   const { id } = useParams();

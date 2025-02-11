@@ -116,8 +116,8 @@ $overlay-color: rgba(0, 0, 0, 0.4);
 
     .image-container {
       position: relative;
-      width: 50px;
-      height: 50px;
+      width: 600px; 
+      height: 400px; 
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -146,19 +146,6 @@ $overlay-color: rgba(0, 0, 0, 0.4);
           background: red;
         }
       }
-    }
-  }
-
-  // Responsive Design
-  @media (max-width: 768px) {
-    padding: 20px;
-
-    .create-listing__button {
-      font-size: 1rem;
-    }
-
-    .image-grid {
-      justify-content: center;
     }
   }
 }
