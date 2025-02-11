@@ -19,12 +19,19 @@ class UsersController < ApplicationController
 
   # GET /profile/:id - Fetch user profile details
   def show
-    user = User.find_by(id: params[:id])
+    user = User.includes(:reviews, car_listings: [images_attachments: :blob]).find_by(id: params[:id])
 
     if user
+      reviews = user.reviews.map do |review|
+        {
+          content: review.content || "No content provided",
+          potatoes: review.potatoes || 0
+        }
+      end
+
       render json: {
         user: user_data(user),
-        listings: user.car_listings.includes(images_attachments: :blob).map do |car|
+        listings: user.car_listings.map do |car|
           {
             id: car.id,
             category: car.category,
@@ -38,7 +45,8 @@ class UsersController < ApplicationController
             description: car.description,
             images: car.images.map { |image| url_for(image) }
           }
-        end
+        end,
+        reviews: reviews.any? ? reviews : [{ content: "No reviews available", potatoes: 0 }]
       }, status: :ok
     else
       render json: { error: "User not found for ID #{params[:id]}" }, status: :not_found
@@ -81,6 +89,8 @@ class UsersController < ApplicationController
     params.permit(:first_name, :last_name, :email, :password, :phone_number, :location, :profile_picture)
   end
 end
+
+
 
 
 

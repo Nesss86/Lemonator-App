@@ -11,6 +11,7 @@
 puts "Seeding database..."
 
 # Destroy existing records
+# Review.destroy_all
 Message.destroy_all
 CarListing.destroy_all
 User.destroy_all
@@ -126,6 +127,66 @@ end
 
 
 puts "Images added successfully!"
+
+# Destroy existing records to avoid duplicates
+Review.destroy_all
+
+puts "Seeding reviews..."
+
+# Expanded reviews pool
+reviews_pool = [
+  { content: "Spud-tacular! Great deal, very clean!", potatoes: 5 },
+  { content: "A little mashed up, but good overall!", potatoes: 1 },
+  { content: "Baked with kindness! Responsive and helpful throughout.", potatoes: 5 },
+  { content: "A bit undercooked in response time, but great otherwise.", potatoes: 3 },
+  { content: "Crispy deal! Exactly as described. Happy with my purchase.", potatoes: 4 },
+  { content: "Smooth transaction. Hassle-free!", potatoes: 5 },
+  { content: "Slightly fried, but seller fixed issues quickly.", potatoes: 3 },
+  { content: "Excellent service—definitely worth it!", potatoes: 5 },
+  { content: "Not as described, but refund was quick.", potatoes: 2 },
+  { content: "Golden deal with top-tier service!", potatoes: 5 },
+  { content: "A bit salty, but overall a good experience.", potatoes: 3 },
+  { content: "Stellar communication and reliable product.", potatoes: 5 },
+  { content: "Soft and pleasant deal, would recommend!", potatoes: 4 },
+  { content: "Car was a bit peeled but mechanically sound.", potatoes: 3 },
+  { content: "Great response time, would definitely buy again.", potatoes: 5 },
+  { content: "Too many bumps, but resolved after negotiation.", potatoes: 2 },
+  { content: "Crisp and professional!", potatoes: 5 },
+  { content: "Loved the baked-in extras!", potatoes: 4 },
+  { content: "Minor hiccups but overall worth it.", potatoes: 3 },
+  { content: "A golden potato of a deal!", potatoes: 5 },
+  { content: "Could use better communication next time.", potatoes: 2 },
+  { content: "Roasted smoothly, came out perfect.", potatoes: 4 },
+  { content: "Good deal, but the delivery was a bit delayed.", potatoes: 3 },
+  { content: "Perfect condition! Highly recommend.", potatoes: 5 },
+  { content: "Just a tad burnt on arrival, but resolved.", potatoes: 3 }
+]
+
+# Shuffle reviews
+shuffled_reviews = reviews_pool.shuffle
+
+# Track the index of the next review to assign
+review_index = 0
+
+created_users.each do |user|
+  5.times do
+    # Wrap around to the beginning of the shuffled reviews if necessary
+    if review_index >= shuffled_reviews.length
+      review_index = 0
+    end
+
+    # Assign review and increment the index
+    Review.create!(
+      user: user,
+      content: shuffled_reviews[review_index][:content],
+      potatoes: shuffled_reviews[review_index][:potatoes]
+    )
+
+    review_index += 1
+  end
+end
+
+puts "Reviews seeded successfully!"
 
 
 # Static Messages (Only for the first two listings)

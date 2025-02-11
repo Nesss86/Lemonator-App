@@ -1,11 +1,21 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")) || null);
 
-  // Update both context and localStorage
+  // Sync context state when localStorage changes (important for quick login)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const updatedUser = JSON.parse(localStorage.getItem("user"));
+      setUser(updatedUser);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   const updateUser = (newUser) => {
     setUser(newUser);
     localStorage.setItem("user", JSON.stringify(newUser));
@@ -18,5 +28,5 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-// Hook to use user context in any component
 export const useUser = () => useContext(UserContext);
+

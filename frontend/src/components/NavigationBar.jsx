@@ -5,8 +5,7 @@ import LemonDriveAIModal from "./Chatbot/LemonDriveAIModal"; // Correct modal im
 import "../styles/NavBar.scss";
 import axios from "axios"; // For API requests
 
-function NavigationBar() {
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
+function NavigationBar({ user, setUser }) {
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const navigate = useNavigate();
@@ -73,7 +72,7 @@ function NavigationBar() {
     return () => {
       window.removeEventListener("userUpdated", handleUserUpdate);
     };
-  }, []);
+  }, [setUser]);
 
   return (
     <nav className="navigation-bar">
@@ -139,6 +138,18 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
