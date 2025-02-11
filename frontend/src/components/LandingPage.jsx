@@ -4,7 +4,7 @@ import SearchBar from './SearchBar';
 import ListingList from './ListingList';
 import { useState, useEffect } from 'react';
 
-function LandingPage({ cars }) {
+function LandingPage({ cars, setCarListings }) {
   const location = useLocation(); // Get the current location
   const [filteredCars, setFilteredCars] = useState([]); // Manage filtered cars
 
@@ -23,7 +23,7 @@ function LandingPage({ cars }) {
   return (
     <div>
       <SearchBar cars={cars} setFilteredCars={setFilteredCars} />
-      <ListingList cars={filteredCars} />
+      <ListingList cars={filteredCars} setCarListings={setCarListings} />
     </div>
   );
 }

@@ -7,7 +7,7 @@ const FavIcon = ({ selected }) => {
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      fill={selected ? "red" : "none"}  // Red when selected, otherwise transparent
+      fill={selected ? "#C80000" : "#EEEEEE"}  // Red when selected, otherwise transparent
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"

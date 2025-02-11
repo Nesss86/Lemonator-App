@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
@@ -16,53 +16,67 @@ import AboutPage from './components/AboutPage';
 import Favourites from './components/Favourites';
 import LemonDriveAIModal from './components/Chatbot/LemonDriveAIModal';
 
+// Custom hook to handle route changes
+function useRouteChangeHandler(fetchAllListings) {
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === '/') {
+      fetchAllListings();
+    }
+  }, [location.pathname]);
+}
+
 function App() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const [carListings, setCarListings] = useState([]);
-  const [showModal, setShowModal] = useState(false); // For chatbot modal visibility
+  const [showModal, setShowModal] = useState(false); // State for the chatbot
+  //  modal visibility
 
-  // Fetch car listings on mount
-  useEffect(() => {
+  // Function to fetch all car listings
+  const fetchAllListings = () => {
     api.get('/car_listings')
-      .then((response) => {
+       .then(response => {
         setCarListings(response.data);
-      })
-      .catch((error) => {
+       })
+       .catch(error => {
         console.error('Error fetching car listings:', error);
-      });
-  }, []);
-
-  // Sync user state when localStorage changes (quick login or logout)
+       });
+  };
+  
+  // Load user and fetch listings when app mounts
   useEffect(() => {
-    const handleStorageChange = () => {
-      const updatedUser = JSON.parse(localStorage.getItem('user'));
-      setUser(updatedUser);
-    };
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    if (loggedInUser) {
+      setUser(loggedInUser);
+    }
 
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    fetchAllListings(); // Fetch all listings on initial load
   }, []);
 
+  // Use the custom hook
+  useRouteChangeHandler(fetchAllListings);
+
+  
   return (
-    <Router>
+   <>
       <NavigationBar user={user} setUser={setUser} />
       <Routes>
-        <Route path="/" element={<LandingPage cars={carListings} />} />
+        <Route path="/" element={<LandingPage cars={carListings}  setCarListings={setCarListings} />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/my-listings" element={<ProfilePage />} />
-        <Route path="/login" element={<LoginForm onLoginSuccess={setUser} />} />
+        <Route path="/my-listings" element={<ProfilePage user={user} setUser={setUser} listings={carListings} setCarListings={setCarListings} />} key={user ? user.id : 'default'} />
+        <Route path="/login" element={<LoginForm onLoginSuccess={setUser} />}  />
         <Route path="/signup" element={<SignupForm onSignupSuccess={setUser} />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/create-listing" element={<NewListing user={user} />} />
-        <Route path="/listing/:id" element={<ListingItemDetails />} />
-        <Route path="/edit-listing/:id" element={<EditListingForm />} />
-        <Route path="/messages" element={<MessagesPage />} />
+        <Route path="/create-listing" element={<NewListing setCars={setCarListings} user={user} />} />
+        <Route path="/listing/:id" element={<ListingItemDetails cars={carListings} />} />
+        <Route path="/edit-listing/:id" element={<EditListingForm cars={carListings} user={user} />} />
+        <Route path="/messages" element={<MessagesPage user={user} />} />
         <Route path="/favourites" element={<Favourites />} />
       </Routes>
 
       {/* Conditionally render LemonDriveAI modal */}
       <LemonDriveAIModal showModal={showModal} setShowModal={setShowModal} />
-    </Router>
+    </>
   );
 }
 

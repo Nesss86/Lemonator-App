@@ -11,7 +11,7 @@ const EditListingForm = ({ cars, user }) => {
 
   const [formData, setFormData] = useState({
     id: "",
-    user_id: user?.id || "",    category: "",
+    user_id: user?.id || "",
     category: "",
     make: "",
     model: "",

@@ -21,7 +21,6 @@ function ProfilePage() {
       }
 
       const response = await api.get(`/profile/${storedUser.id}`);
-      console.log('Profile Response:', response.data);
       setUser(response.data.user);
       setListings(response.data.listings);
     } catch (error) {
@@ -47,13 +46,14 @@ function ProfilePage() {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, [user, navigate]);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [navigate]);
 
   if (loading) return <div>Loading profile...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!user) return <div>Error loading profile. Please try again later.</div>;
-
   return (
     <div className="profile-page">
       <h1>Welcome to Your Profile, {user.first_name} {user.last_name}</h1>
@@ -61,7 +61,7 @@ function ProfilePage() {
 
       <h2>Your Listings</h2>
       {listings.length > 0 ? (
-        <CarListings listings={listings} />
+        <CarListings listings={listings} setListings={setListings} />
       ) : (
         <p>You have no active listings. Create one <a href="/create-listing">here</a>.</p>
       )}

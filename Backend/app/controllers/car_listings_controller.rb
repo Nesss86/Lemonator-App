@@ -1,5 +1,7 @@
 class CarListingsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  # before_action :authenticate_user! #Ensure user is logged in
+  # before_action :set_car_listing, only: [:update, :destroy]
 
   # GET /car_listings
   def index
@@ -59,6 +61,18 @@ class CarListingsController < ApplicationController
     end
   end
 
+  # DESTROY ACTION to remove car listing DELETE /car_listings/:id
+def destroy
+  @car_listing = CarListing.find_by(id: params[:id])
+  
+  if @car_listing.nil?
+    return render json: { error: "Car listing not found" }, status: :not_found
+  end
+
+  @car_listing.destroy
+  render json: { message: "Car listing deleted successfully" }, status: :ok
+end
+
   private
 
   def car_listing_params
@@ -76,7 +90,12 @@ class CarListingsController < ApplicationController
       images: []  # Allow uploading multiple images
     )
   end
-end
 
+  # related to destroy action 
+  def set_car_listing
+  @car_listing = CarListing.find_by(id: params[:id])
+  return render json: { error: "Car listing not found" }, status: :not_found unless @car_listing
+  end
+end
 
 
