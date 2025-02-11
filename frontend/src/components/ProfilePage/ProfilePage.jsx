@@ -1,65 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useUser } from '../../context/UserContext'; // Importing context
 import api from '../../api/api';
 import UserInfo from './UserInfo';
 import CarListings from './CarListings';
-import { useNavigate } from 'react-router-dom';
 import '../../styles/ProfilePage.scss';
 
 function ProfilePage() {
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
+  const { user } = useUser(); // Access user context
   const [listings, setListings] = useState([]);
-  const [reviews, setReviews] = useState([]);  // Add state for reviews
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();  // To navigate dynamically when quick login occurs
 
   // Function to fetch the user's profile
-  const fetchProfile = async (storedUser) => {
-    try {
-      if (!storedUser) {
-        setError('No user found in local storage. Please log in.');
-        return;
-      }
+  const fetchProfile = useCallback(async (userToFetch) => {
+    if (!userToFetch) {
+      setError('No user found in local storage. Please log in.');
+      return;
+    }
 
-      const response = await api.get(`/profile/${storedUser.id}`);
-      setUser(response.data.user);
+    try {
+      const response = await api.get(`/profile/${userToFetch.id}`);
       setListings(response.data.listings);
-      setReviews(response.data.reviews);  // Fetch and store reviews correctly
-    } catch (error) {
-      console.error('Error fetching profile:', error);
+      setReviews(response.data.reviews);
+      setError(null);  // Clear any previous errors
+    } catch (err) {
+      console.error('Error fetching profile:', err);
       setError('Failed to load profile. Please try again later.');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  // Detect changes in logged-in user and re-fetch the profile
+  // Fetch profile whenever the user changes (quick login or normal login)
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    fetchProfile(storedUser);
-
-    // Listen for quick login events using storage events
-    const handleStorageChange = () => {
-      const updatedUser = JSON.parse(localStorage.getItem('user'));
-      if (updatedUser && updatedUser.id !== user?.id) {
-        fetchProfile(updatedUser);
-        navigate('/profile');  // Ensure proper navigation if needed
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, [navigate]);
+    if (user) {
+      fetchProfile(user); // Fetch profile when user is set/changed
+    }
+  }, [user, fetchProfile]);
 
   if (loading) return <div>Loading profile...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!user) return <div>Error loading profile. Please try again later.</div>;
+
   return (
     <div className="profile-page">
       <h1>Welcome to Your Profile, {user.first_name} {user.last_name}</h1>
-      <UserInfo user={user} reviews={reviews} />  {/* Pass reviews as a prop */}
+      <UserInfo user={user} reviews={reviews} />
 
       <h2>Your Listings</h2>
       {listings.length > 0 ? (
@@ -72,6 +59,12 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
+
+
+
+
+
+
 
 
 

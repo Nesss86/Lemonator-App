@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUnreadMessages, markMessagesAsRead } from "../api/api";
 import LemonDriveAIModal from "./Chatbot/LemonDriveAIModal"; // Correct modal import
 import "../styles/NavBar.scss";
 import axios from "axios"; // For API requests
+import { useUser } from "../context/UserContext"; // Import the context
 
-function NavigationBar({ user, setUser }) {
+function NavigationBar() {
+  const { user, updateUser } = useUser(); // Use context here
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const navigate = useNavigate();
@@ -40,8 +42,8 @@ function NavigationBar({ user, setUser }) {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    setUser(null);
-    window.location.href = "/";
+    updateUser(null); // Reset user in context
+    navigate("/"); // Navigate to the home page after logging out
   };
 
   // Fetch user details for quick login
@@ -50,29 +52,13 @@ function NavigationBar({ user, setUser }) {
       const response = await axios.get(`/quick_login/${userId}`);
       if (response.status === 200) {
         const loggedInUser = response.data;
-        setUser(loggedInUser);
-        localStorage.setItem("user", JSON.stringify(loggedInUser));
-        navigate("/profile");
-        // Trigger an artificial page-wide update by emitting a custom event
-        window.dispatchEvent(new Event("userUpdated"));
+        updateUser(loggedInUser); // Update the user in the context
+        navigate("/profile"); // Navigate to profile page
       }
     } catch (error) {
       console.error("Quick login failed:", error);
     }
   };
-
-  useEffect(() => {
-    // Listen for quick login updates across the app
-    const handleUserUpdate = () => {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    };
-
-    window.addEventListener("userUpdated", handleUserUpdate);
-
-    return () => {
-      window.removeEventListener("userUpdated", handleUserUpdate);
-    };
-  }, [setUser]);
 
   return (
     <nav className="navigation-bar">
@@ -138,6 +124,9 @@ function NavigationBar({ user, setUser }) {
 }
 
 export default NavigationBar;
+
+
+
 
 
 
