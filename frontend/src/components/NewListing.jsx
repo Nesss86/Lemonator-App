@@ -63,7 +63,7 @@ const NewListing = ({ setCars, user }) => {
       if (response.status === 201) {
         alert("Listing created successfully!");
         setCars((prevCars) => [...prevCars, response.data]);
-        navigate("/");
+        navigate("/profile");
       }
     } catch (error) {
       console.error("❌ Error creating listing:", error);
