@@ -15,11 +15,9 @@ function LoginForm({ onLoginSuccess }) {
       const response = await api.post('/login', { email, password });
       const user = response.data.user;
 
-      // Store user in local storage
+      // Store user in local storage and trigger state update
       localStorage.setItem('user', JSON.stringify(user));
-
-      // Notify parent component (App.js)
-      onLoginSuccess(user);
+      onLoginSuccess(user); // Notify App.js about login success
 
       // Redirect to profile page
       navigate('/profile');
@@ -53,6 +51,8 @@ function LoginForm({ onLoginSuccess }) {
 }
 
 export default LoginForm;
+
+
 
 
 

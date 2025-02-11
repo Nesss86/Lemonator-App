@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_08_011720) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_10_231223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -79,6 +79,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_08_011720) do
     t.index ["seller_id"], name: "index_messages_on_seller_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "content"
+    t.integer "potatoes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -98,4 +107,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_08_011720) do
   add_foreign_key "messages", "conversations", on_delete: :cascade
   add_foreign_key "messages", "users", column: "buyer_id"
   add_foreign_key "messages", "users", column: "seller_id"
+  add_foreign_key "reviews", "users"
 end

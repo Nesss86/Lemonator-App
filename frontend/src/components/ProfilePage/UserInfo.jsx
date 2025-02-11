@@ -1,20 +1,10 @@
 import React from 'react';
 import "../../styles/UserInfo.scss";
 
-function UserInfo({ user }) {
-  // Ensure profile picture uses a fallback if URL is not provided
+function UserInfo({ user, reviews }) {
   const profilePicture = user.profile_picture_url
     ? user.profile_picture_url
     : `http://localhost:3000/images/profile_pictures/default-profile.jpg`;
-
-  // Randomized reviews with varying potato ratings
-  const reviews = [
-    { content: "Spud-tacular! Great deal, very clean!", potatoes: 5 },
-    { content: "A little mashed up, but good overall!", potatoes: 1 },
-    { content: "Baked with kindness! Responsive and helpful throughout.", potatoes: 5 },
-    { content: "A bit undercooked in response time, but great otherwise.", potatoes: 3 },
-    { content: "Crispy deal! Exactly as described. Happy with my purchase.", potatoes: 4 },
-  ];
 
   return (
     <div className="user-info">
@@ -36,12 +26,16 @@ function UserInfo({ user }) {
         </div>
         <div className="user-info__ratings">
           <h3>Ratings & Reviews</h3>
-          {reviews.map((review, index) => (
-            <div key={index} className="user-info__review">
-              <span className="potatoes">{'🥔'.repeat(review.potatoes)}</span>
-              <p>{review.content}</p>
-            </div>
-          ))}
+          {reviews.length > 0 ? (
+            reviews.map((review, index) => (
+              <div key={index} className="user-info__review">
+                <span className="potatoes">{'🥔'.repeat(review.potatoes)}</span>
+                <p>{review.content}</p>
+              </div>
+            ))
+          ) : (
+            <p>No reviews available.</p>
+          )}
         </div>
       </div>
     </div>
@@ -49,6 +43,11 @@ function UserInfo({ user }) {
 }
 
 export default UserInfo;
+
+
+
+
+
 
 
 

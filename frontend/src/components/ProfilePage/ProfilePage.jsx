@@ -8,6 +8,7 @@ import '../../styles/ProfilePage.scss';
 function ProfilePage() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const [listings, setListings] = useState([]);
+  const [reviews, setReviews] = useState([]);  // Add state for reviews
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();  // To navigate dynamically when quick login occurs
@@ -24,6 +25,7 @@ function ProfilePage() {
       console.log('Profile Response:', response.data);
       setUser(response.data.user);
       setListings(response.data.listings);
+      setReviews(response.data.reviews);  // Fetch and store reviews correctly
     } catch (error) {
       console.error('Error fetching profile:', error);
       setError('Failed to load profile. Please try again later.');
@@ -57,7 +59,7 @@ function ProfilePage() {
   return (
     <div className="profile-page">
       <h1>Welcome to Your Profile, {user.first_name} {user.last_name}</h1>
-      <UserInfo user={user} />
+      <UserInfo user={user} reviews={reviews} />  {/* Pass reviews as a prop */}
 
       <h2>Your Listings</h2>
       {listings.length > 0 ? (
@@ -70,6 +72,13 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
+
+
+
+
+
+
+
 
 
 
