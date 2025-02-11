@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
-import './LoginForm.scss'; // Import the SCSS file
+import '../styles/LoginForm.scss'; // Import the SCSS file
 
 function LoginForm({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
