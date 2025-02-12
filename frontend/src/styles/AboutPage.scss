@@ -8,7 +8,6 @@
   background-color: #f4f4f8;
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
-
 }
 
 .about-page strong {
@@ -22,16 +21,16 @@
   width: 70px;
   height: auto;
   transform: rotate(-45deg);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.3));
 
-    &:hover {
-      transform: rotate(-10deg) scale(1.1);
-      filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.5));
-    }
+  &:hover {
+    transform: rotate(-10deg) scale(1.1);
+    filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.5));
+  }
 }
 
-
+/* 🔹 Maintain Original Size for About Page */
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -39,47 +38,120 @@
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: max-width 0.3s ease;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #333;
+/* 🔹 Expand Container & Team Section When Showing Team Contacts */
+.container.expanded {
+  max-width: 1500px; /* 🔹 Adjusted to fit wider cards */
+}
+
+.team-container {
   text-align: center;
-  margin-bottom: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f4f4f8, #e6e6ff);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1450px; /* 🔹 Expanded to fit the new card sizes */
+  margin: 0 auto;
 }
 
-h2 {
-  font-size: 1.8rem;
-  color: #444;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-p {
-  font-size: 1rem;
-  color: #666;
-  line-height: 1.5;
+/* 🔹 Move Toggle Button to Right */
+.toggle-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
   margin-bottom: 15px;
 }
 
-ul {
-  list-style-type: disc;
-  padding-left: 20px;
+.btn {
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  background: linear-gradient(135deg, #6c63ff, #3f3d9b);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, #5351d4, #2c2a75);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+  }
+
+  &:focus {
+    outline: 2px solid #ffcc00;
+  }
 }
 
-li {
-  font-size: 1rem;
-  color: #666;
+/* 🔹 Keep Cards in One Row */
+.team-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+}
+
+/* 🔹 Increased Card Width (25% Wider) */
+.team-member {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 465px; /* 🔹 Increased width (25% wider than before) */
+  min-height: 220px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.profile-pic {
+  width: 100px; /* 🔹 Slightly increased for balance */
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.team-member strong {
+  font-size: 1.5rem;
+  color: #222;
+  display: block;
   margin-bottom: 5px;
 }
 
-a {
+/* 🔹 Contact Info Styling */
+.contact-info {
+  font-size: 1rem;
+  color: #444;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin: 6px 0;
+  max-width: 95%;
+  display: block;
+  margin: 0 auto;
+}
+
+.contact-info a {
   color: #6c63ff;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
-a:hover {
+.contact-info a:hover {
   color: #4b48c8;
 }
+
+
+
+
+
+
+
