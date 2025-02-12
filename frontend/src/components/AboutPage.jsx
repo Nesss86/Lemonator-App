@@ -23,8 +23,8 @@ const AboutPage = () => {
             <div className="team-grid">
               {[
                 { name: "Vanessa Little", github: "https://github.com/Nesss86", email: "Vanessa.Christine.Little@gmail.com", linkedin: "https://www.linkedin.com/in/vanessa-little-47985866", profilePic: "/images/profile_pictures/vanessa_profile.jpg" },
-                { name: "Saurav Dhillon", github: "https://github.com/sauravdhillon", email: "saurav@example.com", linkedin: "https://www.linkedin.com/in/saurav-dhillon", profilePic: "/images/profile_pictures/saurav_profile.jpg" },
-                { name: "Gustavo De Moura", github: "https://github.com/gustavodemoura", email: "gustavo@example.com", linkedin: "https://www.linkedin.com/in/gustavo-de-moura", profilePic: "/images/profile_pictures/gustavo_profile.jpg" }
+                { name: "Saurav Dhillon", github: "https://github.com/SauravDhillon", email: "souravdhillon010@gmail.com", linkedin: "https://www.linkedin.com/in/saurav-dhillon-52a833154", profilePic: "/images/profile_pictures/saurav_profile.jpg" },
+                { name: "Gustavo De Moura", github: "https://github.com/DemouraGus", email: "demoura.gus@gmail.com", linkedin: "https://www.linkedin.com/in/gustavo-de-moura-55b7b0247", profilePic: "/images/profile_pictures/gustavo_profile.jpg" }
               ].map((contact, index) => (
                 <div key={index} className="team-member">
                   <img src={contact.profilePic} alt={`${contact.name}'s Profile`} className="profile-pic"/>
