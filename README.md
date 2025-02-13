@@ -138,7 +138,7 @@ Lemonator is a modern car marketplace where users can list, browse, and chat abo
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/yourusername/lemonator.git
+git clone https://github.com/Nesss86/lemonator.git
 cd lemonator
 ```
 
