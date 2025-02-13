@@ -36,9 +36,9 @@ Lemonator is a modern car marketplace where users can list, browse, and chat abo
 ![Adding and Deleting Favourites](assets/favourites.gif)
 
 **🖼 Screenshot:**  
-![Favourites Page](assets/favourites.png)
+
 **🖼 Screenshot:** 
-![Favourites Page](assets/favourites1.png)
+
 
 ---
 
